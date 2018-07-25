@@ -9,23 +9,23 @@
         MinHeight="600" MinWidth="860" d:DataContext="{d:DesignInstance}">
     <Window.Resources>
         <SolidColorBrush x:Key="DarkSquareColor" Color="#18FFFFFF" />
-        <SolidColorBrush x:Key="LightSquareColor" Color="#19FFFFFF" Opacity="0.91"/>
+        <SolidColorBrush x:Key="LightSquareColor" Color="#19FFFFFF" Opacity="0.91" />
         <DrawingBrush x:Key="StylishBrush" Viewport="0,0,20,20" ViewportUnits="Absolute" Stretch="None" TileMode="Tile">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
                     <GeometryDrawing Brush="{DynamicResource DarkSquareColor}">
                         <GeometryDrawing.Geometry>
                             <GeometryGroup>
-                                <RectangleGeometry Rect="0,0,10,10"/>
-                                <RectangleGeometry Rect="10,10,10,10"/>
+                                <RectangleGeometry Rect="0,0,10,10" />
+                                <RectangleGeometry Rect="10,10,10,10" />
                             </GeometryGroup>
                         </GeometryDrawing.Geometry>
                     </GeometryDrawing>
                     <GeometryDrawing Brush="{DynamicResource LightSquareColor}">
                         <GeometryDrawing.Geometry>
                             <GeometryGroup>
-                                <RectangleGeometry Rect="10,0,10,10"/>
-                                <RectangleGeometry Rect="0,10,10,10"/>
+                                <RectangleGeometry Rect="10,0,10,10" />
+                                <RectangleGeometry Rect="0,10,10,10" />
                             </GeometryGroup>
                         </GeometryDrawing.Geometry>
                     </GeometryDrawing>
@@ -34,8 +34,38 @@
         </DrawingBrush>
     </Window.Resources>
 
-            
+
     <Grid ShowGridLines="False" Background="{StaticResource StylishBrush}">
+        <Grid.Resources>
+            <Style x:Key="InlineText" TargetType="{x:Type TextBlock}">
+                <Setter Property="Margin" Value="10,5,10,0" />
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Foreground" Value="Green" />
+            </Style>
+            <Style x:Key="TitleText" TargetType="{x:Type TextBlock}">
+                <Setter Property="DockPanel.Dock" Value="Top" />
+                <Setter Property="FontWeight" Value="Normal" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="10,11,10,11" />
+                <Setter Property="Foreground" Value="DarkGreen" />
+            </Style>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Margin" Value="10,5,10,0" />
+                <Setter Property="Background" Value="DarkGray" />
+            </Style>
+            <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#18FFFFFF" Offset="0" />
+                <GradientStop Color="#20FFFFFF" Offset="0.5" />
+                <GradientStop Color="#18FFFFFF" Offset="1" />
+            </LinearGradientBrush>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+                <Setter Property="Margin" Value="10,5,10,0" />
+                <Setter Property="Width" Value="60" />
+            </Style>
+
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -56,23 +86,128 @@
                      Stroke="Black" />
             <Ellipse x:Name="EllipseEnemy"
                      StrokeThickness="2"
-                     Stroke="Red" />
+                     Stroke="Red"
+                     Canvas.Top="{Binding Path=TargetPosition.Y}"
+                     Canvas.Left="{Binding Path=TargetPosition.X}" />
         </Canvas>
-        <Button x:Name="StartSimulationButton"
-                Grid.Column="2"
-                Grid.Row="2"
-                Content="Start Simulation"
-                Width="100"
-                Height="25"
-                VerticalAlignment="Top"
-                Click="OnClickStartSimulationButton" />
-        <Label x:Name="Label"
-               Grid.Column="2"
-               Grid.Row="1"
-               Content="{Binding Path=Position}"
-               Width="100"
-               Height="25"
-               VerticalAlignment="Top" />
+        <Grid Grid.Row="0" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource TitleText}">
+                Параметры движения ПЛ
+            </TextBlock>
+            <TextBlock Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{StaticResource InlineText}"
+                       Name="OurSpeedText">
+                Скорость (Кб/c):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="1"
+                     Name="OurSpeed" />
+            <TextBlock Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{StaticResource InlineText}"
+                       Name="OurCourseInGradTxt">
+                Курс (град):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="2"
+                     Name="OurCourseInGrad" />
+            <Button Grid.Column="1"
+                    Grid.Row="3"
+                    x:Name="ChangeOurParametersButton"
+                    Content="Отдать приказ"
+                    Width="100"
+                    Height="25"
+                    VerticalAlignment="Top"
+                    Margin="0,11,0,0"
+                    Click="OnClickStartSimulationButton" />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0"
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource TitleText}">
+                Параметры движения цели
+            </TextBlock>
+            <TextBlock Grid.Column="0"
+                       Grid.Row="1"
+                       Style="{StaticResource InlineText}"
+                       Name="TargetDistanceText">
+                Дистанция (Кб):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="1"
+                     Name="TargetDistanceKb"
+                     Text="50" />
+            <TextBlock Grid.Column="0"
+                       Grid.Row="2"
+                       Style="{StaticResource InlineText}"
+                       Name="TargetSpeedText">
+                Скорость (Кб/c):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="2"
+                     Name="TargetSpeed"
+                     Text="10" />
+            <TextBlock Grid.Column="0"
+                       Grid.Row="3"
+                       Style="{StaticResource InlineText}"
+                       Name="TargetBearingInGradText">
+                Пеленг (град):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="3"
+                     Name="TargetBearingInGrad"
+                     Text="45" />
+            <TextBlock Grid.Column="0"
+                       Grid.Row="4"
+                       Style="{StaticResource InlineText}"
+                       Name="TargetCourseInGradText">
+                Курс (град):
+            </TextBlock>
+            <TextBox Grid.Column="1"
+                     Grid.Row="4"
+                     Name="TargetCourseInGrad"
+                     Text="90" />
+            <Button Grid.Column="1"
+                    Grid.Row="5"
+                    x:Name="StartSimulationButton"
+                    Content="Начать симуляцию"
+                    Width="125"
+                    Height="25"
+                    VerticalAlignment="Top"
+                    Margin="0,11,0,0"
+
+                    Click="OnClickStartSimulationButton" />
+
+        </Grid>
         <TextBlock x:Name="TimerDisplay" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" />
     </Grid>
 </Window>

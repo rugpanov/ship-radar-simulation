@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using ShipRadarSimulation.bll;
+using ShipRadarSimulation.Entities;
 
 namespace ShipRadarSimulation
 {
@@ -82,9 +83,15 @@ namespace ShipRadarSimulation
 
         private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var canvasSize = e.NewSize;
+            redraw();
+        }
+
+        private void redraw()
+        {
+            var canvasSize = MyCanvas.RenderSize;
             var minSize = Math.Min(canvasSize.Height, canvasSize.Width);
             var ellipse200Rad = (minSize - 2 * DrawIndent) / 2;
+            var scale = ellipse200Rad / 200;
 
             for (var i = 0; i < 8; i++)
             {
@@ -99,11 +106,17 @@ namespace ShipRadarSimulation
             Canvas.SetLeft(EllipseCenter, minSize / 2 - 2);
             EllipseCenter.Width = DotSize;
             EllipseCenter.Height = DotSize;
+            Panel.SetZIndex(EllipseCenter, 240);
 
-            Canvas.SetTop(EllipseCenter, minSize / 2 - 2);
-            Canvas.SetLeft(EllipseCenter, minSize / 2 - 2);
-            EllipseCenter.Width = DotSize;
-            EllipseCenter.Height = DotSize;
+
+            if (myTargetShip != null)
+            {
+                Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * myTargetShip.GetX() - 2);
+                Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * myTargetShip.GetY() - 2);
+                EllipseEnemy.Width = DotSize;
+                EllipseEnemy.Height = DotSize;
+                Panel.SetZIndex(EllipseEnemy, 239);
+            }
 
             var line = myLines[0];
             line.X1 = DrawIndent;
@@ -118,9 +131,39 @@ namespace ShipRadarSimulation
             line2.Y2 = DrawIndent + ellipse200Rad * 2;
         }
 
+        private Ship myTargetShip;
+
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
-            myDataContext.Position += 200;
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += DispatcherTimerTick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            dispatcherTimer.Start();
+        }
+
+        private void DispatcherTimerTick(object sender, EventArgs e)
+        {
+            if (myTargetShip == null)
+            {
+                var targetBearing = double.Parse(TargetBearingInGrad.Text);
+                var targetDistance = double.Parse(TargetDistanceKb.Text);
+                var targetX = targetDistance * Math.Sin(DegreeToRadian(targetBearing));
+                var targetY = targetDistance * Math.Cos(DegreeToRadian(targetBearing));
+                var targetShip = new Ship(targetX, targetY, double.Parse(TargetSpeed.Text),
+                    double.Parse(TargetCourseInGrad.Text));
+                myTargetShip = targetShip;
+            }
+            else
+            {
+                myTargetShip.processOneSecond();
+            }
+
+            redraw();
+        }
+
+        private static double DegreeToRadian(double angle)
+        {
+            return Math.PI * angle / 180.0;
         }
     }
 }
