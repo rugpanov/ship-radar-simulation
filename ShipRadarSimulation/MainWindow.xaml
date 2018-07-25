@@ -5,10 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="600" Width="800"
-        MinHeight="600" MinWidth="800" d:DataContext="{d:DesignInstance}">
+        Height="600" Width="860"
+        MinHeight="600" MinWidth="860" d:DataContext="{d:DesignInstance}">
+    <Window.Resources>
+        <SolidColorBrush x:Key="DarkSquareColor" Color="#18FFFFFF" />
+        <SolidColorBrush x:Key="LightSquareColor" Color="#19FFFFFF" Opacity="0.91"/>
+        <DrawingBrush x:Key="StylishBrush" Viewport="0,0,20,20" ViewportUnits="Absolute" Stretch="None" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource DarkSquareColor}">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,10,10"/>
+                                <RectangleGeometry Rect="10,10,10,10"/>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource LightSquareColor}">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="10,0,10,10"/>
+                                <RectangleGeometry Rect="0,10,10,10"/>
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </Window.Resources>
 
-    <Grid ShowGridLines="False">
+            
+    <Grid ShowGridLines="False" Background="{StaticResource StylishBrush}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />

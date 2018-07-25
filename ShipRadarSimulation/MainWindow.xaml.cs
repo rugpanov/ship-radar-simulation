@@ -11,7 +11,7 @@ namespace ShipRadarSimulation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         DispatcherTimer t;
         DateTime start;
@@ -24,6 +24,7 @@ namespace ShipRadarSimulation
         public MainWindow()
         {
             InitializeComponent();
+            Background = Resources["StylishBrush"] as DrawingBrush;
             SizeToContent = SizeToContent.WidthAndHeight;
             myDataContext = new SimulationViewModel();
             DataContext = myDataContext;
@@ -42,17 +43,11 @@ namespace ShipRadarSimulation
             myEllipses = new Ellipse[num];
             for (var i = 0; i < num; i++)
             {
-                var ellipse = i != num - 1
-                    ? new Ellipse
-                    {
-                        Stroke = Brushes.Gray,
-                        StrokeThickness = 2
-                    }
-                    : new Ellipse
-                    {
-                        Stroke = Brushes.Black,
-                        StrokeThickness = 3
-                    };
+                var ellipse = new Ellipse
+                {
+                    Stroke = Brushes.Green,
+                    StrokeThickness = i % 2 == 0 ? 1 : 2
+                };
 
                 MyCanvas.Children.Add(ellipse);
                 myEllipses[i] = ellipse;
@@ -64,7 +59,7 @@ namespace ShipRadarSimulation
             myLines = new Line[4];
             var line = new Line
             {
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Green,
                 StrokeThickness = 1
             };
             MyCanvas.Children.Add(line);
@@ -72,7 +67,7 @@ namespace ShipRadarSimulation
 
             var line2 = new Line
             {
-                Stroke = Brushes.Gray,
+                Stroke = Brushes.Green,
                 StrokeThickness = 1
             };
             MyCanvas.Children.Add(line2);
@@ -81,7 +76,7 @@ namespace ShipRadarSimulation
 
         private void T_Tick(object sender, EventArgs e)
         {
-            //TimerDisplay.Text = Convert.ToString(DateTime.Now - start);
+            TimerDisplay.Text = Convert.ToString(DateTime.Now - start);
         }
 
 
