@@ -132,6 +132,7 @@ namespace ShipRadarSimulation
         }
 
         private Ship myTargetShip;
+        private Ship myShip;
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
@@ -149,12 +150,14 @@ namespace ShipRadarSimulation
                 var targetDistance = double.Parse(TargetDistanceKb.Text);
                 var targetX = targetDistance * Math.Sin(DegreeToRadian(targetBearing));
                 var targetY = targetDistance * Math.Cos(DegreeToRadian(targetBearing));
-                var targetShip = new Ship(targetX, targetY, double.Parse(TargetSpeed.Text),
-                    double.Parse(TargetCourseInGrad.Text));
-                myTargetShip = targetShip;
+                var targetSpeed = double.Parse(TargetSpeed.Text);
+                var targetCourseInGrad = double.Parse(TargetSpeed.Text);
+                myTargetShip = new Ship(targetX, targetY, targetSpeed, targetCourseInGrad);
+                myShip = new Ship(0, 0, double.Parse(OurSpeed.Text), double.Parse(OurCourseInGrad.Text));
             }
             else
             {
+                myShip.processOneSecond();
                 myTargetShip.processOneSecond();
             }
 
