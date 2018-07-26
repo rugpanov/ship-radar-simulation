@@ -109,10 +109,13 @@ namespace ShipRadarSimulation
             Panel.SetZIndex(EllipseCenter, 240);
 
 
-            if (myTargetShip != null)
+            if (myTargetShip != null && myShip != null)
             {
-                Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * myTargetShip.GetX() - 2);
-                Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * myTargetShip.GetY() - 2);
+                var movementY = myTargetShip.GetY() - myShip.GetY();
+                var movementX = myTargetShip.GetX() - myShip.GetX();
+
+                Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
+                Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
                 EllipseEnemy.Width = DotSize;
                 EllipseEnemy.Height = DotSize;
                 Panel.SetZIndex(EllipseEnemy, 239);
@@ -133,40 +136,45 @@ namespace ShipRadarSimulation
 
         private Ship myTargetShip;
         private Ship myShip;
+        private DispatcherTimer myDispatcherTimer;
+
+        private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
+        {
+            if (myShip == null) return;
+
+            var speed = double.Parse(OurSpeed.Text);
+            var theCourse = double.Parse(OurCourseInGrad.Text);
+            myShip = new Ship(myShip.GetX(), myShip.GetY(), speed, theCourse);
+        }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += DispatcherTimerTick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-            dispatcherTimer.Start();
+            InitBattleField();
+            myDispatcherTimer?.Stop();
+            myDispatcherTimer = new DispatcherTimer();
+            myDispatcherTimer.Tick += DispatcherTimerTick;
+            myDispatcherTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            myDispatcherTimer.Start();
         }
 
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
-            if (myTargetShip == null)
-            {
-                var targetBearing = double.Parse(TargetBearingInGrad.Text);
-                var targetDistance = double.Parse(TargetDistanceKb.Text);
-                var targetX = targetDistance * Math.Sin(DegreeToRadian(targetBearing));
-                var targetY = targetDistance * Math.Cos(DegreeToRadian(targetBearing));
-                var targetSpeed = double.Parse(TargetSpeed.Text);
-                var targetCourseInGrad = double.Parse(TargetSpeed.Text);
-                myTargetShip = new Ship(targetX, targetY, targetSpeed, targetCourseInGrad);
-                myShip = new Ship(0, 0, double.Parse(OurSpeed.Text), double.Parse(OurCourseInGrad.Text));
-            }
-            else
-            {
-                myShip.processOneSecond();
-                myTargetShip.processOneSecond();
-            }
-
+            myShip.ProcessOneSecond();
+            myTargetShip.ProcessOneSecond();
             redraw();
         }
 
-        private static double DegreeToRadian(double angle)
+        private void InitBattleField()
         {
-            return Math.PI * angle / 180.0;
+            var targetBearing = double.Parse(TargetBearingInGrad.Text);
+            var targetDistance = double.Parse(TargetDistanceKb.Text);
+            var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
+            var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
+            var targetSpeed = double.Parse(TargetSpeed.Text);
+            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
+            myTargetShip = new Ship(targetX, targetY, targetSpeed, targetCourseInGrad);
+            myShip = new Ship(0, 0, double.Parse(OurSpeed.Text), double.Parse(OurCourseInGrad.Text));
+            redraw();
         }
     }
 }

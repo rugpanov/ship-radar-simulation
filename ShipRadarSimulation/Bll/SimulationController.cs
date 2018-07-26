@@ -24,8 +24,8 @@ namespace ShipRadarSimulation.bll
             
         private void DispatcherTimerTick(object sender, EventArgs e)
         {
-            myShip.processOneSecond();
-            myTarget.processOneSecond();
+            myShip.ProcessOneSecond();
+            myTarget.ProcessOneSecond();
         }
     }
 

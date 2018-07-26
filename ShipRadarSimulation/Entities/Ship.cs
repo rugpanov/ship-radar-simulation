@@ -1,4 +1,5 @@
 ﻿using System;
+using ShipRadarSimulation.bll;
 
 namespace ShipRadarSimulation.Entities
 {
@@ -52,10 +53,10 @@ namespace ShipRadarSimulation.Entities
             return myY;
         }
 
-        public void processOneSecond()
+        public void ProcessOneSecond()
         {
-            var deltaX = 1 * mySpeedInKbS * Math.Cos(myCourseInGrad);
-            var deltaY = 1 * mySpeedInKbS * Math.Sin(myCourseInGrad);
+            var deltaX = 1 * mySpeedInKbS * Math.Sin(Utils.DegreeToRadian(myCourseInGrad));
+            var deltaY = 1 * mySpeedInKbS * Math.Cos(Utils.DegreeToRadian(myCourseInGrad));
 
             myX += deltaX;
             myY += deltaY;

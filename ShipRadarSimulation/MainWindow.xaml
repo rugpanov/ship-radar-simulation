@@ -34,7 +34,6 @@
         </DrawingBrush>
     </Window.Resources>
 
-
     <Grid ShowGridLines="False" Background="{StaticResource StylishBrush}">
         <Grid.Resources>
             <Style x:Key="InlineText" TargetType="{x:Type TextBlock}">
@@ -116,7 +115,8 @@
             </TextBlock>
             <TextBox Grid.Column="1"
                      Grid.Row="1"
-                     Name="OurSpeed" />
+                     Name="OurSpeed"
+                     Text="10" />
             <TextBlock Grid.Column="0"
                        Grid.Row="2"
                        Style="{StaticResource InlineText}"
@@ -125,7 +125,8 @@
             </TextBlock>
             <TextBox Grid.Column="1"
                      Grid.Row="2"
-                     Name="OurCourseInGrad" />
+                     Name="OurCourseInGrad"
+                     Text="270"/>
             <Button Grid.Column="1"
                     Grid.Row="3"
                     x:Name="ChangeOurParametersButton"
@@ -134,7 +135,7 @@
                     Height="25"
                     VerticalAlignment="Top"
                     Margin="0,11,0,0"
-                    Click="OnClickStartSimulationButton" />
+                    Click="OnClickRequestChangeParameters" />
         </Grid>
         <Grid Grid.Row="1" Grid.Column="2">
             <Grid.ColumnDefinitions>
@@ -185,7 +186,7 @@
             <TextBox Grid.Column="1"
                      Grid.Row="3"
                      Name="TargetBearingInGrad"
-                     Text="45" />
+                     Text="90" />
             <TextBlock Grid.Column="0"
                        Grid.Row="4"
                        Style="{StaticResource InlineText}"
@@ -204,7 +205,6 @@
                     Height="25"
                     VerticalAlignment="Top"
                     Margin="0,11,0,0"
-
                     Click="OnClickStartSimulationButton" />
 
         </Grid>
