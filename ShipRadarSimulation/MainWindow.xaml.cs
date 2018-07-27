@@ -9,6 +9,11 @@ using ShipRadarSimulation.Entities;
 
 namespace ShipRadarSimulation
 {
+    /*
+     * Одна морская миля = 10 Кабельтовых
+     * 1 узел = 1 морская миля/час = 10 Кб/час = 10/3600 Кб/c = 1/360 Кб/c
+     * 
+     */
     public partial class MainWindow
     {
         DispatcherTimer t;
@@ -138,9 +143,9 @@ namespace ShipRadarSimulation
         {
             if (myShip == null) return;
 
-            var speed = double.Parse(OurSpeed.Text);
+            var speedInKnot = double.Parse(OurSpeedInKnot.Text);
             var theCourse = double.Parse(OurCourseInGrad.Text);
-            myShip = new Ship(myShip.GetX(), myShip.GetY(), speed, theCourse);
+            myShip = new Ship(myShip.GetX(), myShip.GetY(), speedInKnot / 360, theCourse);
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
@@ -169,10 +174,10 @@ namespace ShipRadarSimulation
             var targetDistance = double.Parse(TargetDistanceKb.Text);
             var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
             var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
-            var targetSpeed = double.Parse(TargetSpeed.Text);
+            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text);
             var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
-            myTargetShip = new Ship(targetX, targetY, targetSpeed, targetCourseInGrad);
-            myShip = new Ship(0, 0, double.Parse(OurSpeed.Text), double.Parse(OurCourseInGrad.Text));
+            myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
+            myShip = new Ship(0, 0, double.Parse(OurSpeedInKnot.Text) / 360, double.Parse(OurCourseInGrad.Text));
             Redraw();
         }
         
