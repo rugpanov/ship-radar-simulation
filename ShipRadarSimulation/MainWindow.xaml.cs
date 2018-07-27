@@ -29,7 +29,7 @@ namespace ShipRadarSimulation
         private DispatcherTimer myDispatcherTimer;
         private const double DefaultTargetDistance = 50;
         private const double DefaultTargetBearing = 60;
-        
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,6 +44,8 @@ namespace ShipRadarSimulation
             start = DateTime.Now;
             MyCanvas.SizeChanged += CanvasSizeChanged;
 
+            myTargetShip = new Ship(0, 0, 0, 0);
+            myShip = new Ship(0, 0, 0, 0);
             InitLines();
             InitEllipses(8);
         }
@@ -118,17 +120,14 @@ namespace ShipRadarSimulation
             Panel.SetZIndex(EllipseCenter, 240);
 
 
-            if (myTargetShip != null && myShip != null)
-            {
-                var movementY = myTargetShip.GetY() - myShip.GetY();
-                var movementX = myTargetShip.GetX() - myShip.GetX();
+            var movementY = myTargetShip.GetY() - myShip.GetY();
+            var movementX = myTargetShip.GetX() - myShip.GetX();
 
-                Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
-                Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
-                EllipseEnemy.Width = DotSize;
-                EllipseEnemy.Height = DotSize;
-                Panel.SetZIndex(EllipseEnemy, 239);
-            }
+            Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
+            Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
+            EllipseEnemy.Width = DotSize;
+            EllipseEnemy.Height = DotSize;
+            Panel.SetZIndex(EllipseEnemy, 239);
 
             var line = myLines[0];
             line.X1 = DrawIndent;
@@ -186,7 +185,7 @@ namespace ShipRadarSimulation
             myShip = new Ship(0, 0, double.Parse(OurSpeedInKnot.Text) / 360, double.Parse(OurCourseInGrad.Text));
             Redraw();
         }
-        
+
         private void OnClickResetSimulationButton(object sender, RoutedEventArgs e)
         {
             myDataContext.ShowStartButton = true;
@@ -214,6 +213,11 @@ namespace ShipRadarSimulation
             myDataContext.ShowResumeSimulation = false;
             myDataContext.ShowPauseSimulation = true;
             myDispatcherTimer?.Start();
+        }
+
+        private void OnClickExit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
