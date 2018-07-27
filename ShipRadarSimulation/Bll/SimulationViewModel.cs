@@ -5,43 +5,52 @@ namespace ShipRadarSimulation.bll
 {
     public class SimulationViewModel : INotifyPropertyChanged
     {
-        private bool mySimulationNotStarted = true;
         
-        public bool SimulationStarted
+        
+        private bool myShowStartButton = true;
+        public bool ShowStartButton
         {
-            get => !mySimulationNotStarted;
+            get => myShowStartButton;
             set
             {
-                mySimulationNotStarted = !value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged("SimulationNotStarted");
-            }
-        }
-        
-        public bool SimulationNotStarted
-        {
-            get => mySimulationNotStarted;
-            set
-            {
-                mySimulationNotStarted = value;
-                NotifyPropertyChanged();
-                NotifyPropertyChanged("SimulationStarted");
-            }
-        }
-        
-        private int p = 100;
-        
-       // public DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(string), typeof(SimulationDataContext), new UIPropertyMetadata(string.Empty));
-        public int Position
-        {
-            get => p;
-            set
-            {
-                p = value;
+                myShowStartButton = value;
                 NotifyPropertyChanged();
             }
         }
-
+        
+        private bool myShowStopButton;
+        public bool ShowStopButton
+        {
+            get => myShowStopButton;
+            set
+            {
+                myShowStopButton = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        private bool myShowPauseSimulation;
+        public bool ShowPauseSimulation
+        {
+            get => myShowPauseSimulation;
+            set
+            {
+                myShowPauseSimulation = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        private bool myShowResumeSimulation;
+        public bool ShowResumeSimulation
+        {
+            get => myShowResumeSimulation;
+            set
+            {
+                myShowResumeSimulation = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

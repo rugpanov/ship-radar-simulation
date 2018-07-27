@@ -33,22 +33,76 @@
                 </DrawingGroup>
             </DrawingBrush.Drawing>
         </DrawingBrush>
+        <Geometry x:Key="StartSimulationIcon">M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm-4 29V15l12 9-12 9z</Geometry>
+        <Geometry x:Key="StopSimulationIcon">M1216 1184v-576q0-14-9-23t-23-9h-576q-14 0-23 9t-9 23v576q0 14 9 23t23 9h576q14 0 23-9t9-23zm448-288q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z</Geometry>
+        <Geometry x:Key="PauseSimulationIcon">M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z</Geometry>
+        
+        <BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="BorderBrush" Value="#D5DFE5" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupBox}">
+                        <Grid SnapsToDevicePixels="true">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="6" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="6" />
+                            </Grid.RowDefinitions>
+                            <Border CornerRadius="4" Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4"
+                                    BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="Transparent"
+                                    Background="{TemplateBinding Background}" />
+                            <Border Name="Header" Padding="3,1,3,0" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                                <ContentPresenter ContentSource="Header" RecognizesAccessKey="true"
+                                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ContentPresenter Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                              Margin="{TemplateBinding Padding}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <Border Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="4"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="3">
+                                <Border.OpacityMask>
+                                    <MultiBinding Converter="{StaticResource BorderGapMaskConverter}"
+                                                  ConverterParameter="7">
+                                        <Binding ElementName="Header" Path="ActualWidth" />
+                                        <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </Border.OpacityMask>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
+
     <Grid ShowGridLines="False" Background="{StaticResource StylishBrush}">
+
         <Grid.Resources>
             <Style x:Key="InlineText" TargetType="{x:Type TextBlock}">
                 <Setter Property="Margin" Value="10,5,10,0" />
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="FontSize" Value="12" />
-                <Setter Property="Foreground" Value="Green" />
+                <Setter Property="Foreground" Value="White" />
             </Style>
             <Style x:Key="TitleText" TargetType="{x:Type TextBlock}">
                 <Setter Property="DockPanel.Dock" Value="Top" />
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="10,11,10,11" />
-                <Setter Property="Foreground" Value="DarkGreen" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="White" />
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Margin" Value="10,5,10,0" />
@@ -64,7 +118,20 @@
                 <Setter Property="Margin" Value="10,5,10,0" />
                 <Setter Property="Width" Value="60" />
             </Style>
-
+            <Style x:Key="SimulationButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="Margin" Value="0,0,0,0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid Background="{TemplateBinding Background}" Width="30" Height="30">
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -104,14 +171,12 @@
             <TextBlock Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       HorizontalAlignment="Center"
                        Style="{StaticResource TitleText}">
                 Параметры движения ПЛ
             </TextBlock>
             <TextBlock Grid.Column="0"
                        Grid.Row="1"
-                       Style="{StaticResource InlineText}"
-                       Name="OurSpeedText">
+                       Style="{StaticResource InlineText}">
                 Скорость (Кб/c):
             </TextBlock>
             <TextBox Grid.Column="1"
@@ -120,17 +185,15 @@
                      Text="10" />
             <TextBlock Grid.Column="0"
                        Grid.Row="2"
-                       Style="{StaticResource InlineText}"
-                       Name="OurCourseInGradTxt">
+                       Style="{StaticResource InlineText}">
                 Курс (град):
             </TextBlock>
             <TextBox Grid.Column="1"
                      Grid.Row="2"
                      Name="OurCourseInGrad"
-                     Text="270"/>
+                     Text="270" />
             <Button Grid.Column="1"
                     Grid.Row="3"
-                    x:Name="ChangeOurParametersButton"
                     Content="Отдать приказ"
                     Width="100"
                     Height="25"
@@ -156,14 +219,12 @@
             <TextBlock Grid.Column="0"
                        Grid.Row="0"
                        Grid.ColumnSpan="2"
-                       HorizontalAlignment="Center"
                        Style="{StaticResource TitleText}">
                 Параметры движения цели
             </TextBlock>
             <TextBlock Grid.Column="0"
                        Grid.Row="1"
-                       Style="{StaticResource InlineText}"
-                       Name="TargetDistanceText">
+                       Style="{StaticResource InlineText}">
                 Дистанция (Кб):
             </TextBlock>
             <TextBox Grid.Column="1"
@@ -172,8 +233,7 @@
                      Text="50" />
             <TextBlock Grid.Column="0"
                        Grid.Row="2"
-                       Style="{StaticResource InlineText}"
-                       Name="TargetSpeedText">
+                       Style="{StaticResource InlineText}">
                 Скорость (Кб/c):
             </TextBlock>
             <TextBox Grid.Column="1"
@@ -182,8 +242,7 @@
                      Text="10" />
             <TextBlock Grid.Column="0"
                        Grid.Row="3"
-                       Style="{StaticResource InlineText}"
-                       Name="TargetBearingInGradText">
+                       Style="{StaticResource InlineText}">
                 Пеленг (град):
             </TextBlock>
             <TextBox Grid.Column="1"
@@ -192,55 +251,87 @@
                      Text="90" />
             <TextBlock Grid.Column="0"
                        Grid.Row="4"
-                       Style="{StaticResource InlineText}"
-                       Name="TargetCourseInGradText">
+                       Style="{StaticResource InlineText}">
                 Курс (град):
             </TextBlock>
             <TextBox Grid.Column="1"
                      Grid.Row="4"
                      Name="TargetCourseInGrad"
                      Text="90" />
-            <Button Grid.Column="1"
-                    Grid.Row="5"
-                    x:Name="StartSimulationButton"
-                    Content="Начать симуляцию"
-                    Width="125"
-                    Height="25"
-                    VerticalAlignment="Top"
-                    Margin="0,11,0,0"
-                    Visibility="{Binding Path=SimulationNotStarted, Converter={StaticResource BoolToVis}}"
-                    Click="OnClickStartSimulationButton" />
-            <Button Grid.Column="0"
-                    Grid.Row="6"
-                    x:Name="ResetSimulationButton"
-                    Content="Закончить симуляцию"
-                    Width="125"
-                    Height="25"
-                    VerticalAlignment="Top"
-                    Margin="0,11,0,0"
-                    Visibility="{Binding Path=SimulationStarted, Converter={StaticResource BoolToVis}}"
-                    Click="OnClickResetSimulationButton" />
-            <Button Grid.Column="1"
-                    Grid.Row="6"
-                    x:Name="PouseSimulationButton"
-                    Content="Приостановить симуляцию"
-                    Width="125"
-                    Height="25"
-                    VerticalAlignment="Top"
-                    Margin="0,11,0,0"
-                    Visibility="{Binding Path=SimulationStarted, Converter={StaticResource BoolToVis}}"
-                    Click="OnClickPouseSimulationButton" />
-            <Button Grid.Column="1"
-                    Grid.Row="7"
-                    x:Name="UpPouseSimulationButton"
-                    Content="Возобновить симуляцию"
-                    Width="125"
-                    Height="25"
-                    VerticalAlignment="Top"
-                    Margin="0,11,0,0"
-                    Visibility="{Binding Path=SimulationStarted, Converter={StaticResource BoolToVis}}"
-                    Click="OnClickUpPouseSimulationButton" />
 
+            <GroupBox Grid.Column="1"
+                      Grid.Row="5"
+                      Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+                <GroupBox.Header>
+                    <TextBlock Text="Тренировка" Style="{StaticResource TitleText}" Margin="0" ></TextBlock>
+                </GroupBox.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0"
+                            Grid.Row="0"
+                            Grid.ColumnSpan="2"
+                            Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}"
+                            Click="OnClickStartSimulationButton"
+                            Style="{StaticResource SimulationButtonStyle}">
+                        <Grid>
+                            <Path Data="{StaticResource StartSimulationIcon}"
+                                  Stretch="Uniform" 
+                                  Fill="#fff"
+                                  RenderTransformOrigin="0.5,0.5" />
+                        </Grid>
+                    </Button>
+                    <Button Grid.Column="0"
+                            Grid.Row="0"
+                            Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
+                            Click="OnClickResetSimulationButton"
+                            Style="{StaticResource SimulationButtonStyle}">
+                        <Grid>
+                            <Path Data="{StaticResource StopSimulationIcon}" 
+                                  Stretch="Uniform" 
+                                  Fill="#fff"
+                                  RenderTransformOrigin="0.5,0.5" />
+                        </Grid>
+                    </Button>
+                    <Button Grid.Column="1"
+                            Grid.Row="0"
+                            Visibility="{Binding Path=ShowPauseSimulation, Converter={StaticResource BoolToVis}}"
+                            Click="OnClickPouseSimulationButton"
+                            Style="{StaticResource SimulationButtonStyle}">
+                        <Grid>
+                            <Path Data="{StaticResource PauseSimulationIcon}"
+                                  Stretch="Uniform" 
+                                  Fill="#fff"
+                                  RenderTransformOrigin="0.5,0.5" />
+                        </Grid>
+                    </Button>
+                    
+                    <Button Grid.Column="1"
+                            Grid.Row="0"
+                            Visibility="{Binding Path=ShowResumeSimulation, Converter={StaticResource BoolToVis}}"
+                            Click="OnClickUpPouseSimulationButton"
+                            Style="{StaticResource SimulationButtonStyle}">
+                        <Grid>
+                            <Path Data="{StaticResource StartSimulationIcon}" 
+                                  Stretch="Uniform" 
+                                  Fill="#fff"
+                                  RenderTransformOrigin="0.5,0.5" />
+                        </Grid>
+                    </Button>
+                </Grid>
+            </GroupBox>
+
+
+            
+
+
+            
         </Grid>
         <TextBlock x:Name="TimerDisplay" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" />
     </Grid>

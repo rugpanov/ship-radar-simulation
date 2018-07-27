@@ -149,7 +149,9 @@ namespace ShipRadarSimulation
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
-            myDataContext.SimulationNotStarted = false;
+            myDataContext.ShowStartButton = false;
+            myDataContext.ShowPauseSimulation = true;
+            myDataContext.ShowStopButton = true;
             InitBattleField();
             myDispatcherTimer?.Stop();
             myDispatcherTimer = new DispatcherTimer();
@@ -180,7 +182,10 @@ namespace ShipRadarSimulation
         
         private void OnClickResetSimulationButton(object sender, RoutedEventArgs e)
         {
-            myDataContext.SimulationNotStarted = true;
+            myDataContext.ShowStartButton = true;
+            myDataContext.ShowResumeSimulation = false;
+            myDataContext.ShowPauseSimulation = false;
+            myDataContext.ShowStopButton = false;
 
             myDispatcherTimer?.Stop();
             myShip = new Ship(0, 0, 0, 0);
@@ -190,11 +195,15 @@ namespace ShipRadarSimulation
 
         private void OnClickPouseSimulationButton(object sender, RoutedEventArgs e)
         {
+            myDataContext.ShowResumeSimulation = true;
+            myDataContext.ShowPauseSimulation = false;
             myDispatcherTimer?.Stop();
         }
 
         private void OnClickUpPouseSimulationButton(object sender, RoutedEventArgs e)
         {
+            myDataContext.ShowResumeSimulation = false;
+            myDataContext.ShowPauseSimulation = true;
             myDispatcherTimer?.Start();
         }
     }
