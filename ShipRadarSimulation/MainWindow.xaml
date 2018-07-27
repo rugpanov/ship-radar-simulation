@@ -108,7 +108,7 @@
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Margin" Value="10,5,10,0" />
-                <Setter Property="Background" Value="DarkGray" />
+                <Setter Property="Background" Value="#bababa" />
             </Style>
             <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#18FFFFFF" Offset="0" />
@@ -231,7 +231,8 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Content="Отдать приказ"
-                        Foreground="#bababa"
+                        Background="#bababa"
+                        Foreground="Black"
                         Width="100"
                         Height="25"
                         VerticalAlignment="Top"
