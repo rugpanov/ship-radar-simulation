@@ -36,7 +36,7 @@
         <Geometry x:Key="StartSimulationIcon">M24 4C12.95 4 4 12.95 4 24s8.95 20 20 20 20-8.95 20-20S35.05 4 24 4zm-4 29V15l12 9-12 9z</Geometry>
         <Geometry x:Key="StopSimulationIcon">M1216 1184v-576q0-14-9-23t-23-9h-576q-14 0-23 9t-9 23v576q0 14 9 23t23 9h576q14 0 23-9t9-23zm448-288q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z</Geometry>
         <Geometry x:Key="PauseSimulationIcon">M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z</Geometry>
-        
+
         <BorderGapMaskConverter x:Key="BorderGapMaskConverter" />
         <Style TargetType="{x:Type GroupBox}">
             <Setter Property="BorderBrush" Value="#D5DFE5" />
@@ -157,182 +157,173 @@
                      Canvas.Top="{Binding Path=TargetPosition.Y}"
                      Canvas.Left="{Binding Path=TargetPosition.X}" />
         </Canvas>
-        <Grid Grid.Row="0" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0"
-                       Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Style="{StaticResource TitleText}">
-                Параметры движения ПЛ
-            </TextBlock>
-            <TextBlock Grid.Column="0"
-                       Grid.Row="1"
-                       Style="{StaticResource InlineText}">
-                Скорость (Кб/c):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="1"
-                     Name="OurSpeed"
-                     Text="10" />
-            <TextBlock Grid.Column="0"
-                       Grid.Row="2"
-                       Style="{StaticResource InlineText}">
-                Курс (град):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="2"
-                     Name="OurCourseInGrad"
-                     Text="270" />
-            <Button Grid.Column="1"
-                    Grid.Row="3"
-                    Content="Отдать приказ"
-                    Width="100"
-                    Height="25"
-                    VerticalAlignment="Top"
-                    Margin="0,11,0,0"
-                    Click="OnClickRequestChangeParameters" />
-        </Grid>
-        <Grid Grid.Row="1" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0"
-                       Grid.Row="0"
-                       Grid.ColumnSpan="2"
-                       Style="{StaticResource TitleText}">
-                Параметры движения цели
-            </TextBlock>
-            <TextBlock Grid.Column="0"
-                       Grid.Row="1"
-                       Style="{StaticResource InlineText}">
-                Дистанция (Кб):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="1"
-                     Name="TargetDistanceKb"
-                     Text="50" />
-            <TextBlock Grid.Column="0"
-                       Grid.Row="2"
-                       Style="{StaticResource InlineText}">
-                Скорость (Кб/c):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="2"
-                     Name="TargetSpeed"
-                     Text="10" />
-            <TextBlock Grid.Column="0"
-                       Grid.Row="3"
-                       Style="{StaticResource InlineText}">
-                Пеленг (град):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="3"
-                     Name="TargetBearingInGrad"
-                     Text="90" />
-            <TextBlock Grid.Column="0"
-                       Grid.Row="4"
-                       Style="{StaticResource InlineText}">
-                Курс (град):
-            </TextBlock>
-            <TextBox Grid.Column="1"
-                     Grid.Row="4"
-                     Name="TargetCourseInGrad"
-                     Text="90" />
 
-            <GroupBox Grid.Column="1"
-                      Grid.Row="5"
-                      Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
-                <GroupBox.Header>
-                    <TextBlock Text="Тренировка" Style="{StaticResource TitleText}" Margin="0" ></TextBlock>
-                </GroupBox.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Button Grid.Column="0"
-                            Grid.Row="0"
-                            Grid.ColumnSpan="2"
-                            Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}"
-                            Click="OnClickStartSimulationButton"
-                            Style="{StaticResource SimulationButtonStyle}">
-                        <Grid>
-                            <Path Data="{StaticResource StartSimulationIcon}"
-                                  Stretch="Uniform" 
-                                  Fill="#fff"
-                                  RenderTransformOrigin="0.5,0.5" />
-                        </Grid>
+        <GroupBox Grid.Row="0" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+            <GroupBox.Header>
+                <TextBlock Text="Параметры движения ПЛ" Style="{StaticResource TitleText}" Margin="0" />
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource InlineText}">
+                    Скорость (Кб/c):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="0"
+                         Name="OurSpeed"
+                         Text="10" />
+                <TextBlock Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource InlineText}">
+                    Курс (град):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="1"
+                         Name="OurCourseInGrad"
+                         Text="270" />
+                <Button Grid.Column="0"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Center"
+                        Content="Отдать приказ"
+                        Foreground="White"
+                        Width="100"
+                        Height="25"
+                        VerticalAlignment="Top"
+                        Margin="0,11,0,0"
+                        Click="OnClickRequestChangeParameters" >
                     </Button>
-                    <Button Grid.Column="0"
-                            Grid.Row="0"
-                            Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
-                            Click="OnClickResetSimulationButton"
-                            Style="{StaticResource SimulationButtonStyle}">
-                        <Grid>
-                            <Path Data="{StaticResource StopSimulationIcon}" 
-                                  Stretch="Uniform" 
-                                  Fill="#fff"
-                                  RenderTransformOrigin="0.5,0.5" />
-                        </Grid>
-                    </Button>
-                    <Button Grid.Column="1"
-                            Grid.Row="0"
-                            Visibility="{Binding Path=ShowPauseSimulation, Converter={StaticResource BoolToVis}}"
-                            Click="OnClickPouseSimulationButton"
-                            Style="{StaticResource SimulationButtonStyle}">
-                        <Grid>
-                            <Path Data="{StaticResource PauseSimulationIcon}"
-                                  Stretch="Uniform" 
-                                  Fill="#fff"
-                                  RenderTransformOrigin="0.5,0.5" />
-                        </Grid>
-                    </Button>
-                    
-                    <Button Grid.Column="1"
-                            Grid.Row="0"
-                            Visibility="{Binding Path=ShowResumeSimulation, Converter={StaticResource BoolToVis}}"
-                            Click="OnClickUpPouseSimulationButton"
-                            Style="{StaticResource SimulationButtonStyle}">
-                        <Grid>
-                            <Path Data="{StaticResource StartSimulationIcon}" 
-                                  Stretch="Uniform" 
-                                  Fill="#fff"
-                                  RenderTransformOrigin="0.5,0.5" />
-                        </Grid>
-                    </Button>
-                </Grid>
-            </GroupBox>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+            <GroupBox.Header>
+                <TextBlock Text="Параметры движения цели" Style="{StaticResource TitleText}" Margin="0" />
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource InlineText}">
+                    Дистанция (Кб):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="0"
+                         Name="TargetDistanceKb"
+                         Text="50" />
+                <TextBlock Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource InlineText}">
+                    Скорость (Кб/c):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="1"
+                         Name="TargetSpeed"
+                         Text="10" />
+                <TextBlock Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource InlineText}">
+                    Пеленг (град):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="2"
+                         Name="TargetBearingInGrad"
+                         Text="90" />
+                <TextBlock Grid.Column="0"
+                           Grid.Row="3"
+                           Style="{StaticResource InlineText}">
+                    Курс (град):
+                </TextBlock>
+                <TextBox Grid.Column="1"
+                         Grid.Row="3"
+                         Name="TargetCourseInGrad"
+                         Text="90" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="2"
+                  Grid.Row="2"
+                  Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+            <GroupBox.Header>
+                <TextBlock Text="Управление тренировкой" Style="{StaticResource TitleText}" Margin="0" />
+            </GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button Grid.Column="0"
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}"
+                        Click="OnClickStartSimulationButton"
+                        Style="{StaticResource SimulationButtonStyle}">
+                    <Grid>
+                        <Path Data="{StaticResource StartSimulationIcon}"
+                              Stretch="Uniform"
+                              Fill="#fff"
+                              RenderTransformOrigin="0.5,0.5" />
+                    </Grid>
+                </Button>
+                <Button Grid.Column="0"
+                        Grid.Row="0"
+                        Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
+                        Click="OnClickResetSimulationButton"
+                        Style="{StaticResource SimulationButtonStyle}">
+                    <Grid>
+                        <Path Data="{StaticResource StopSimulationIcon}"
+                              Stretch="Uniform"
+                              Fill="#fff"
+                              RenderTransformOrigin="0.5,0.5" />
+                    </Grid>
+                </Button>
+                <Button Grid.Column="1"
+                        Grid.Row="0"
+                        Visibility="{Binding Path=ShowPauseSimulation, Converter={StaticResource BoolToVis}}"
+                        Click="OnClickPouseSimulationButton"
+                        Style="{StaticResource SimulationButtonStyle}">
+                    <Grid>
+                        <Path Data="{StaticResource PauseSimulationIcon}"
+                              Stretch="Uniform"
+                              Fill="#fff"
+                              RenderTransformOrigin="0.5,0.5" />
+                    </Grid>
+                </Button>
 
-
-            
-
-
-            
-        </Grid>
-        <TextBlock x:Name="TimerDisplay" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" />
+                <Button Grid.Column="1"
+                        Grid.Row="0"
+                        Visibility="{Binding Path=ShowResumeSimulation, Converter={StaticResource BoolToVis}}"
+                        Click="OnClickUpPouseSimulationButton"
+                        Style="{StaticResource SimulationButtonStyle}">
+                    <Grid>
+                        <Path Data="{StaticResource StartSimulationIcon}"
+                              Stretch="Uniform"
+                              Fill="#fff"
+                              RenderTransformOrigin="0.5,0.5" />
+                    </Grid>
+                </Button>
+            </Grid>
+        </GroupBox>
     </Grid>
+    <!-- <TextBlock x:Name="TimerDisplay" HorizontalAlignment="Left" Grid.Column="0" Grid.Row="0" /> -->
 </Window>

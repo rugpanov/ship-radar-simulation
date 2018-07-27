@@ -9,9 +9,6 @@ using ShipRadarSimulation.Entities;
 
 namespace ShipRadarSimulation
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow
     {
         DispatcherTimer t;
@@ -77,16 +74,16 @@ namespace ShipRadarSimulation
 
         private void T_Tick(object sender, EventArgs e)
         {
-            TimerDisplay.Text = Convert.ToString(DateTime.Now - start);
+//            TimerDisplay.Text = Convert.ToString(DateTime.Now - start);
         }
 
 
         private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            redraw();
+            Redraw();
         }
 
-        private void redraw()
+        private void Redraw()
         {
             var canvasSize = MyCanvas.RenderSize;
             var minSize = Math.Min(canvasSize.Height, canvasSize.Width);
@@ -164,7 +161,7 @@ namespace ShipRadarSimulation
         {
             myShip.ProcessOneSecond();
             myTargetShip.ProcessOneSecond();
-            redraw();
+            Redraw();
         }
 
         private void InitBattleField()
@@ -177,7 +174,7 @@ namespace ShipRadarSimulation
             var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
             myTargetShip = new Ship(targetX, targetY, targetSpeed, targetCourseInGrad);
             myShip = new Ship(0, 0, double.Parse(OurSpeed.Text), double.Parse(OurCourseInGrad.Text));
-            redraw();
+            Redraw();
         }
         
         private void OnClickResetSimulationButton(object sender, RoutedEventArgs e)
@@ -190,7 +187,7 @@ namespace ShipRadarSimulation
             myDispatcherTimer?.Stop();
             myShip = new Ship(0, 0, 0, 0);
             myTargetShip = new Ship(0, 0, 0, 0);
-            redraw();
+            Redraw();
         }
 
         private void OnClickPouseSimulationButton(object sender, RoutedEventArgs e)
