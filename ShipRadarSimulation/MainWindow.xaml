@@ -124,10 +124,11 @@
                 <Setter Property="Margin" Value="0,0,0,0" />
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Grid Background="{TemplateBinding Background}" Width="30" Height="30">
+                            <Grid Background="{TemplateBinding Background}" Width="60" Height="60">
                                 <ContentPresenter />
                             </Grid>
                         </ControlTemplate>
@@ -324,11 +325,9 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Button Grid.Column="0"
-                        Grid.Row="0"
                         Grid.ColumnSpan="2"
                         Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}"
                         Click="OnClickStartSimulationButton"
