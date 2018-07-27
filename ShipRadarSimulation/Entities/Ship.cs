@@ -61,5 +61,17 @@ namespace ShipRadarSimulation.Entities
             myX += deltaX;
             myY += deltaY;
         }
+        
+        public double MeasureDistance(Ship another)
+        {
+            return Math.Sqrt(Math.Pow(GetX() - another.GetX(), 2) + Math.Pow(GetY() - another.GetY(), 2));
+        }
+
+        public double MeasureBearing(Ship another)
+        {
+            var movementY = another.GetY() - GetY();
+            var movementX = another.GetX() - GetX();
+            return Utils.RadianToDegree(Math.Atan2(movementX, movementY));
+        }
     }
 }

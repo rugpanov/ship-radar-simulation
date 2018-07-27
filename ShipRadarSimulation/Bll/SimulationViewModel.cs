@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace ShipRadarSimulation.bll
@@ -47,6 +48,28 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myShowResumeSimulation = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        private double myTargetDistance;
+        public double TargetDistance
+        {
+            get => Math.Round(myTargetDistance, 4);
+            set
+            {
+                myTargetDistance = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        private double myTargetBearing;
+        public double TargetBearing
+        {
+            get => Math.Round(myTargetBearing, 4);
+            set
+            {
+                myTargetBearing = value;
                 NotifyPropertyChanged();
             }
         }

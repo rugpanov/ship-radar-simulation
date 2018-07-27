@@ -24,12 +24,20 @@ namespace ShipRadarSimulation
         private Line[] myLines;
         private readonly SimulationViewModel myDataContext;
 
+        private Ship myTargetShip;
+        private Ship myShip;
+        private DispatcherTimer myDispatcherTimer;
+        private const double DefaultTargetDistance = 50;
+        private const double DefaultTargetBearing = 60;
+        
         public MainWindow()
         {
             InitializeComponent();
             SizeToContent = SizeToContent.WidthAndHeight;
             myDataContext = new SimulationViewModel();
             DataContext = myDataContext;
+            myDataContext.TargetDistance = DefaultTargetDistance;
+            myDataContext.TargetBearing = DefaultTargetBearing;
 
             t = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 50), DispatcherPriority.Background,
                 T_Tick, Dispatcher.CurrentDispatcher) {IsEnabled = true};
@@ -135,10 +143,6 @@ namespace ShipRadarSimulation
             line2.Y2 = DrawIndent + ellipse200Rad * 2;
         }
 
-        private Ship myTargetShip;
-        private Ship myShip;
-        private DispatcherTimer myDispatcherTimer;
-
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
             if (myShip == null) return;
@@ -165,6 +169,8 @@ namespace ShipRadarSimulation
         {
             myShip.ProcessOneSecond();
             myTargetShip.ProcessOneSecond();
+            myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
+            myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
             Redraw();
         }
 
@@ -191,6 +197,8 @@ namespace ShipRadarSimulation
             myDispatcherTimer?.Stop();
             myShip = new Ship(0, 0, 0, 0);
             myTargetShip = new Ship(0, 0, 0, 0);
+            myDataContext.TargetDistance = DefaultTargetDistance;
+            myDataContext.TargetBearing = DefaultTargetBearing;
             Redraw();
         }
 
