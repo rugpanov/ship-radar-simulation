@@ -163,7 +163,7 @@
 
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Height="25"
                    LastChildFill="False" VerticalAlignment="Top">
-            <Menu Width="Auto" Height="20" Background="#3c3f41" DockPanel.Dock="Top">
+            <Menu Width="Auto" Height="20" Background="#3c3f41" DockPanel.Dock="Top" BorderThickness="1" BorderBrush="#282828">
                 <MenuItem Header="Файл" Foreground="#bababa" Padding="6,0,6,0" >
                     <MenuItem Header="Открыть тренировку" Foreground="Black" />
                     <MenuItem Header="Сохранить лог" Foreground="Black" />
