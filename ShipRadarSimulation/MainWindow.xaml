@@ -96,7 +96,7 @@
                 <Setter Property="Margin" Value="10,5,10,0" />
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="FontSize" Value="12" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Foreground" Value="#bababa" />
             </Style>
             <Style x:Key="TitleText" TargetType="{x:Type TextBlock}">
                 <Setter Property="DockPanel.Dock" Value="Top" />
@@ -104,7 +104,7 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="10,11,10,11" />
                 <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Foreground" Value="#bababa" />
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="Margin" Value="10,5,10,0" />
@@ -183,7 +183,7 @@
             <StackPanel />
         </DockPanel>
 
-        <GroupBox Grid.Row="1" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+        <GroupBox Grid.Row="1" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
             <GroupBox.Header>
                 <TextBlock Text="Параметры движения ПЛ" Style="{StaticResource TitleText}" Margin="0" />
             </GroupBox.Header>
@@ -230,7 +230,7 @@
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Content="Отдать приказ"
-                        Foreground="White"
+                        Foreground="#bababa"
                         Width="100"
                         Height="25"
                         VerticalAlignment="Top"
@@ -238,7 +238,7 @@
                         Click="OnClickRequestChangeParameters" />
             </Grid>
         </GroupBox>
-        <GroupBox Grid.Row="2" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+        <GroupBox Grid.Row="2" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
             <GroupBox.Header>
                 <TextBlock Text="Параметры движения цели" Style="{StaticResource TitleText}" Margin="0" />
             </GroupBox.Header>
@@ -314,7 +314,7 @@
         </GroupBox>
         <GroupBox Grid.Column="2"
                   Grid.Row="3"
-                  Padding="10" Margin="10" BorderThickness="1" BorderBrush="White">
+                  Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
             <GroupBox.Header>
                 <TextBlock Text="Управление тренировкой" Style="{StaticResource TitleText}" Margin="0" />
             </GroupBox.Header>
@@ -336,7 +336,7 @@
                     <Grid>
                         <Path Data="{StaticResource StartSimulationIcon}"
                               Stretch="Uniform"
-                              Fill="#fff"
+                              Fill="#bababa"
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
@@ -348,7 +348,7 @@
                     <Grid>
                         <Path Data="{StaticResource StopSimulationIcon}"
                               Stretch="Uniform"
-                              Fill="#fff"
+                              Fill="#bababa"
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
@@ -360,7 +360,7 @@
                     <Grid>
                         <Path Data="{StaticResource PauseSimulationIcon}"
                               Stretch="Uniform"
-                              Fill="#fff"
+                              Fill="#bababa"
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
@@ -373,7 +373,7 @@
                     <Grid>
                         <Path Data="{StaticResource StartSimulationIcon}"
                               Stretch="Uniform"
-                              Fill="#fff"
+                              Fill="#bababa"
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
