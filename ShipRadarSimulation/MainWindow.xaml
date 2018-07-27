@@ -85,7 +85,9 @@
             </Setter>
         </Style>
     </Window.Resources>
-
+    <Window.Background>
+        <StaticResource ResourceKey="StylishBrush" />
+    </Window.Background>
 
     <Grid ShowGridLines="False" Background="{StaticResource StylishBrush}">
 

@@ -22,7 +22,6 @@ namespace ShipRadarSimulation
         public MainWindow()
         {
             InitializeComponent();
-            Background = Resources["StylishBrush"] as DrawingBrush;
             SizeToContent = SizeToContent.WidthAndHeight;
             myDataContext = new SimulationViewModel();
             DataContext = myDataContext;
