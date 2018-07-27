@@ -340,7 +340,7 @@
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
-                <Button Grid.Column="0"
+                <Button Grid.Column="1"
                         Grid.Row="0"
                         Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
                         Click="OnClickResetSimulationButton"
@@ -352,7 +352,7 @@
                               RenderTransformOrigin="0.5,0.5" />
                     </Grid>
                 </Button>
-                <Button Grid.Column="1"
+                <Button Grid.Column="0"
                         Grid.Row="0"
                         Visibility="{Binding Path=ShowPauseSimulation, Converter={StaticResource BoolToVis}}"
                         Click="OnClickPouseSimulationButton"
@@ -365,7 +365,7 @@
                     </Grid>
                 </Button>
 
-                <Button Grid.Column="1"
+                <Button Grid.Column="0"
                         Grid.Row="0"
                         Visibility="{Binding Path=ShowResumeSimulation, Converter={StaticResource BoolToVis}}"
                         Click="OnClickUpPouseSimulationButton"
