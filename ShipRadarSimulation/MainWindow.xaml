@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         Title="MainWindow"
         Height="600" Width="860"
+        KeyDown="SpaceIsPressed"
         MinHeight="600" MinWidth="860" d:DataContext="{d:DesignInstance}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
@@ -207,7 +208,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="0"
                          Name="OurSpeedInKnot"
-                         Text="10" />
+                         Text="10" TextChanged="OurSpeedInKnot_TextChanged"/>
                 <TextBlock Grid.Column="2"
                            Grid.Row="0"
                            Style="{StaticResource InlineText}"
@@ -266,7 +267,7 @@
                          Grid.Row="0"
                          IsEnabled="{Binding Path=ShowStartButton}"
                          Name="TargetDistanceKb"
-                         Text="{Binding Path=TargetDistance}" />
+                         Text="{Binding Path=TargetDistance}" TextChanged="TargetDistanceKb_TextChanged" />
                 <TextBlock Grid.Column="2"
                            Grid.Row="0"
                            Style="{StaticResource InlineText}"
@@ -279,7 +280,7 @@
                          Grid.Row="1"
                          IsEnabled="{Binding Path=ShowStartButton}"
                          Name="TargetBearingInGrad"
-                         Text="{Binding Path=TargetBearing}" />
+                         Text="{Binding Path=TargetBearing}" TextChanged="TargetBearingInGrad_TextChanged" />
                 <TextBlock Grid.Column="2"
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
@@ -330,6 +331,7 @@
                 </Grid.RowDefinitions>
                 <Button Grid.Column="0"
                         Grid.ColumnSpan="2"
+                        Name="StartSimulation"
                         Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}"
                         Click="OnClickStartSimulationButton"
                         Style="{StaticResource SimulationButtonStyle}">
@@ -354,6 +356,7 @@
                 </Button>
                 <Button Grid.Column="0"
                         Grid.Row="0"
+                        Name="PauseSimulation"
                         Visibility="{Binding Path=ShowPauseSimulation, Converter={StaticResource BoolToVis}}"
                         Click="OnClickPouseSimulationButton"
                         Style="{StaticResource SimulationButtonStyle}">
@@ -367,6 +370,7 @@
 
                 <Button Grid.Column="0"
                         Grid.Row="0"
+                        Name="ResumeSimulation"
                         Visibility="{Binding Path=ShowResumeSimulation, Converter={StaticResource BoolToVis}}"
                         Click="OnClickUpPouseSimulationButton"
                         Style="{StaticResource SimulationButtonStyle}">

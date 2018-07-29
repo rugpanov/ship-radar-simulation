@@ -1,0 +1,14 @@
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\bin\Release\ShipRadarSimulation.exe.config
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\bin\Release\ShipRadarSimulation.exe
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\bin\Release\ShipRadarSimulation.pdb
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\MainWindow.baml
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\MainWindow.g.cs
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\App.g.cs
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation_MarkupCompile.cache
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.g.resources
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.Properties.Resources.resources
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.csproj.GenerateResource.cache
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.csproj.CoreCompileInputs.cache
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.exe
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.pdb
+C:\Users\A\Documents\Visual Studio 2017\Projects\ship-radar-simulation-master\ShipRadarSimulation\obj\Release\ShipRadarSimulation.csprojAssemblyReference.cache
