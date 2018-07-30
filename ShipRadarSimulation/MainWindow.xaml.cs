@@ -145,6 +145,25 @@ namespace ShipRadarSimulation
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
             if (myShip == null) return;
+            var isValid = true;
+            
+            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
+            {
+                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
+            {
+                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
 
             var speedInKnot = double.Parse(OurSpeedInKnot.Text);
             var theCourse = double.Parse(OurCourseInGrad.Text);
@@ -153,10 +172,11 @@ namespace ShipRadarSimulation
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
+            var exitStatus = InitBattleField();
+            if (!exitStatus) return;
             myDataContext.ShowStartButton = false;
             myDataContext.ShowPauseSimulation = true;
             myDataContext.ShowStopButton = true;
-            InitBattleField();
             myDispatcherTimer?.Stop();
             myDispatcherTimer = new DispatcherTimer();
             myDispatcherTimer.Tick += DispatcherTimerTick;
@@ -173,17 +193,79 @@ namespace ShipRadarSimulation
             Redraw();
         }
 
-        private void InitBattleField()
+        private bool InitBattleField()
         {
-            var targetBearing = double.Parse(TargetBearingInGrad.Text);
-            var targetDistance = double.Parse(TargetDistanceKb.Text);
-            var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
-            var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
-            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text);
-            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
-            myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-            myShip = new Ship(0, 0, double.Parse(OurSpeedInKnot.Text) / 360, double.Parse(OurCourseInGrad.Text));
-            Redraw();
+            var isValid = true;
+            if (!double.TryParse(TargetBearingInGrad.Text, out var targetBearing))
+            {
+                TargetBearingInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetBearingInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(TargetDistanceKb.Text, out var targetDistance))
+            {
+                TargetDistanceKb.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetDistanceKb.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(TargetSpeedInKnot.Text, out var targetSpeedInKnot))
+            {
+                TargetSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+
+            if (!double.TryParse(TargetCourseInGrad.Text, out var targetCourseInGrad))
+            {
+                TargetCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
+            {
+                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
+            {
+                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+
+            if (isValid)
+            {
+                var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
+                var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
+                myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
+                myShip = new Ship(0, 0, speedInKnot / 360, theCourse);
+                Redraw();
+            }
+            
+            return isValid;
         }
 
         private void OnClickResetSimulationButton(object sender, RoutedEventArgs e)
