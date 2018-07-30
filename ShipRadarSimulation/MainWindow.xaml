@@ -6,6 +6,7 @@
         mc:Ignorable="d"
         Title="MainWindow"
         Height="600" Width="860"
+        KeyDown="SpaceIsPressed"
         MinHeight="600" MinWidth="860" d:DataContext="{d:DesignInstance}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -218,6 +218,23 @@ namespace ShipRadarSimulation
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void SpaceIsPressed(object sender, KeyEventArgs e)
+        {
+            if (e.Key != Key.Space) return;
+            if (myDataContext.ShowStartButton)
+            {
+                OnClickStartSimulationButton(null, null);
+            }
+            else if (myDataContext.ShowPauseSimulation)
+            {
+                OnClickPouseSimulationButton(null, null);
+            }
+            else
+            {
+                OnClickUpPouseSimulationButton(null, null);
+            }
         }
     }
 }
