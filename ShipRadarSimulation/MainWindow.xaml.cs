@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -22,6 +23,8 @@ namespace ShipRadarSimulation
         private Ellipse[] myEllipses;
         private TextBlock[] degreeLable;
         private Line[] myLines;
+        private TextBox[] ourFields;
+        private TextBox[] allFields;
         private readonly SimulationViewModel myDataContext;
 
         private Ship myTargetShip;
@@ -46,6 +49,7 @@ namespace ShipRadarSimulation
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
+            InitTexboxes();
 
             // ReSharper disable once ObjectCreationAsStatement
             new DispatcherTimer(
@@ -231,34 +235,47 @@ namespace ShipRadarSimulation
             DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
+        private void InitTexboxes()
+        {
+            ourFields = new TextBox[2];
+            allFields = new TextBox[6];
+            ourFields[0] = OurCourseInGrad;
+            ourFields[1] = OurSpeedInKnot; 
+            allFields[0] = TargetDistanceKb;
+            allFields[1] = TargetBearingInGrad;            
+            allFields[2] = TargetSpeedInKnot;
+            allFields[3] = TargetCourseInGrad;            
+            allFields[4] = OurSpeedInKnot;
+            allFields[5] = OurCourseInGrad;          
+        }
+        private double[] fieldsValidation(TextBox[] fields, double[] movementParams, out bool isValid)
+        {           
+            isValid = true;
+            for (var i = 0; i < fields.Length; i++)
+            {
+                if (!double.TryParse(fields[i].Text, out movementParams[i]))
+                {
+                    fields[i].BorderBrush = new SolidColorBrush(Colors.Red);
+                    isValid = false;
+                }
+                else
+                {
+                    fields[i].BorderBrush = SystemColors.ControlDarkBrush;                                  
+                }
+            }
+            return movementParams;
+        }
+
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
-            if (myShip == null) return;
-            var isValid = true;
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
+            if (myShip == null) return;      
+            double[] movementParams = new double[ourFields.Length];;
+            movementParams = fieldsValidation(ourFields, movementParams, out var isValid);
             if (isValid)
             {                
-                myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
+                myShip.AddOrder(new Order(movementParams[0],  movementParams[1] / 360));
             }
+            
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
@@ -274,73 +291,14 @@ namespace ShipRadarSimulation
 
         private bool InitBattleField()
         {
-            var isValid = true;
-            if (!double.TryParse(TargetBearingInGrad.Text, out var targetBearing))
-            {
-                TargetBearingInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetBearingInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetDistanceKb.Text, out var targetDistance))
-            {
-                TargetDistanceKb.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetDistanceKb.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetSpeedInKnot.Text, out var targetSpeedInKnot))
-            {
-                TargetSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
-            if (!double.TryParse(TargetCourseInGrad.Text, out var targetCourseInGrad))
-            {
-                TargetCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
+            double[] movementParams = new double[allFields.Length];;
+            movementParams = fieldsValidation(allFields, movementParams, out var isValid);
             if (isValid)
             {
-                var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
-                var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
-                myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-                myShip = new Ship(0, 0, speedInKnot / 360, theCourse);
+                var targetX = movementParams[0] * Math.Sin(Utils.DegreeToRadian(movementParams[1]));
+                var targetY = movementParams[0] * Math.Cos(Utils.DegreeToRadian(movementParams[1]));
+                myTargetShip = new Ship(targetX, targetY, movementParams[2] / 360, movementParams[3]);
+                myShip = new Ship(0, 0, movementParams[4] / 360, movementParams[5]);
                 Redraw();
             }
             
