@@ -28,8 +28,8 @@ namespace ShipRadarSimulation
         private Ship myShip;
         private readonly Timer myShownTimer;
         private int myOldTimeInSec;
-        private const double DefaultTargetDistance = 50;
-        private const double DefaultTargetBearing = 60;
+        private const double DefaultTargetDistance = 100;
+        private const double DefaultTargetBearing = 0;
 
         public MainWindow()
         {
