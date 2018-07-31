@@ -71,7 +71,8 @@ namespace ShipRadarSimulation.Entities
         {
             var movementY = another.GetY() - GetY();
             var movementX = another.GetX() - GetX();
-            return Utils.RadianToDegree(Math.Atan2(movementX, movementY));
+            var degree = Utils.RadianToDegree(Math.Atan2(movementX, movementY));
+            return degree >= 0 ? degree : 360 + degree;
         }
     }
 }
