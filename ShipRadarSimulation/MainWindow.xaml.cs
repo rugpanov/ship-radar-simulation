@@ -253,12 +253,11 @@ namespace ShipRadarSimulation
             else
             {
                 OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-
             }
 
             if (isValid)
             {                
-                myShip = new Ship(myShip.GetX(), myShip.GetY(), speedInKnot / 360, theCourse);
+                myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
             }
         }
 
