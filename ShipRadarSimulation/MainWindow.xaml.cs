@@ -47,7 +47,8 @@ namespace ShipRadarSimulation
             InitEllipses(8);
             InitDegreeLables();
 
-            var dispatcherTimer = new DispatcherTimer(
+            // ReSharper disable once ObjectCreationAsStatement
+            new DispatcherTimer(
                     new TimeSpan(0, 0, 0, 0, 100),
                     DispatcherPriority.Background,
                     TimerTick,
@@ -68,6 +69,8 @@ namespace ShipRadarSimulation
             myTargetShip.ProcessOneSecond();
             myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
             myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
+            myDataContext.MyCourseInGrad = myShip.GetCourseInGrad();
+            myDataContext.MySpeedInKnot = myShip.GetSpeedInKbS() * 360;
             Redraw();
         }
 

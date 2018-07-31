@@ -54,10 +54,37 @@ namespace ShipRadarSimulation.bll
             }
         }
 
+        private double myCourceInGrad;
+        
+        public double MyCourseInGrad
+        {
+            // ReSharper disable once UnusedMember.Global
+            get => Math.Round(myCourceInGrad, 4);
+            set
+            {
+                myCourceInGrad = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private double mySpeedInKnot;
+        
+        public double MySpeedInKnot
+        {
+            // ReSharper disable once UnusedMember.Global
+            get => Math.Round(mySpeedInKnot, 4);
+            set
+            {
+                mySpeedInKnot = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
         private double myTargetDistance;
 
         public double TargetDistance
         {
+            // ReSharper disable once UnusedMember.Global
             get => Math.Round(myTargetDistance, 4);
             set
             {
@@ -70,6 +97,7 @@ namespace ShipRadarSimulation.bll
 
         public double TargetBearing
         {
+            // ReSharper disable once UnusedMember.Global
             get => Math.Round(myTargetBearing, 4);
             set
             {
@@ -90,6 +118,7 @@ namespace ShipRadarSimulation.bll
             get => myTimerTimeInMs;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public string TimerTimePresentable
         {
             get
