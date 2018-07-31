@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -251,15 +252,17 @@ namespace ShipRadarSimulation
         private double[] fieldsValidation(TextBox[] fields, double[] movementParams, out bool isValid)
         {           
             isValid = true;
+            Regex regExp = new Regex(@"^[0-9]{1,3}((\.|,)[0-9]{1,4})?$");
             for (var i = 0; i < fields.Length; i++)
             {
-                if (!double.TryParse(fields[i].Text, out movementParams[i]))
-                {
+                if (!regExp.IsMatch(fields[i].Text))
+                {                   
                     fields[i].BorderBrush = new SolidColorBrush(Colors.Red);
                     isValid = false;
                 }
                 else
                 {
+                    double.TryParse(fields[i].Text.Replace(',', '.'), out movementParams[i]);
                     fields[i].BorderBrush = SystemColors.ControlDarkBrush;                                  
                 }
             }
