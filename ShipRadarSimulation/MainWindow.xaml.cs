@@ -16,8 +16,6 @@ namespace ShipRadarSimulation
      */
     public partial class MainWindow
     {
-        DispatcherTimer t;
-        DateTime start;
         private const int DrawIndent = 50;
         private const int DotSize = 4;
         private const int radialLinesCount = 12;
@@ -28,7 +26,8 @@ namespace ShipRadarSimulation
 
         private Ship myTargetShip;
         private Ship myShip;
-        private DispatcherTimer myDispatcherTimer;
+        private readonly Timer myShownTimer;
+        private int myOldTimeInSec;
         private const double DefaultTargetDistance = 50;
         private const double DefaultTargetBearing = 60;
 
@@ -40,14 +39,6 @@ namespace ShipRadarSimulation
             DataContext = myDataContext;
             myDataContext.TargetDistance = DefaultTargetDistance;
             myDataContext.TargetBearing = DefaultTargetBearing;
-
-            t = new DispatcherTimer(
-                    new TimeSpan(0, 0, 0, 0, 50),
-                    DispatcherPriority.Background,
-                    T_Tick,
-                    Dispatcher.CurrentDispatcher)
-                {IsEnabled = true};
-            start = DateTime.Now;
             MyCanvas.SizeChanged += CanvasSizeChanged;
 
             myTargetShip = new Ship(0, 0, 0, 0);
@@ -55,6 +46,29 @@ namespace ShipRadarSimulation
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
+
+            var dispatcherTimer = new DispatcherTimer(
+                    new TimeSpan(0, 0, 0, 0, 100),
+                    DispatcherPriority.Background,
+                    TimerTick,
+                    Dispatcher.CurrentDispatcher)
+                {IsEnabled = true};
+
+            myShownTimer = new Timer();
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
+            var  timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
+            if (myOldTimeInSec == timeInSec) return;
+            
+            myOldTimeInSec = timeInSec;
+            myShip.ProcessOneSecond();
+            myTargetShip.ProcessOneSecond();
+            myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
+            myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
+            Redraw();
         }
 
         private void InitEllipses(int num)
@@ -173,12 +187,6 @@ namespace ShipRadarSimulation
             }
         }
 
-        private void T_Tick(object sender, EventArgs e)
-        {
-            //            TimerDisplay.Text = Convert.ToString(DateTime.Now - start);
-        }
-
-
         private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
         {
             Redraw();
@@ -258,20 +266,8 @@ namespace ShipRadarSimulation
             myDataContext.ShowStartButton = false;
             myDataContext.ShowPauseSimulation = true;
             myDataContext.ShowStopButton = true;
-            myDispatcherTimer?.Stop();
-            myDispatcherTimer = new DispatcherTimer();
-            myDispatcherTimer.Tick += DispatcherTimerTick;
-            myDispatcherTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
-            myDispatcherTimer.Start();
-        }
 
-        private void DispatcherTimerTick(object sender, EventArgs e)
-        {
-            myShip.ProcessOneSecond();
-            myTargetShip.ProcessOneSecond();
-            myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
-            myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
-            Redraw();
+            myShownTimer.Start();
         }
 
         private bool InitBattleField()
@@ -356,26 +352,30 @@ namespace ShipRadarSimulation
             myDataContext.ShowPauseSimulation = false;
             myDataContext.ShowStopButton = false;
 
-            myDispatcherTimer?.Stop();
             myShip = new Ship(0, 0, 0, 0);
             myTargetShip = new Ship(0, 0, 0, 0);
             myDataContext.TargetDistance = DefaultTargetDistance;
             myDataContext.TargetBearing = DefaultTargetBearing;
             Redraw();
+            
+            myShownTimer.Reset();
+            myDataContext.TimerTimeInMs = 0;
         }
 
         private void OnClickPouseSimulationButton(object sender, RoutedEventArgs e)
         {
             myDataContext.ShowResumeSimulation = true;
             myDataContext.ShowPauseSimulation = false;
-            myDispatcherTimer?.Stop();
+            
+            myShownTimer.Stop();
         }
 
         private void OnClickUpPouseSimulationButton(object sender, RoutedEventArgs e)
         {
             myDataContext.ShowResumeSimulation = false;
             myDataContext.ShowPauseSimulation = true;
-            myDispatcherTimer?.Start();
+            
+            myShownTimer.Start();
         }
 
         private void OnClickExit(object sender, RoutedEventArgs e)
