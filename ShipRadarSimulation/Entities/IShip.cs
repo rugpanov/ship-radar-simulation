@@ -3,7 +3,6 @@
     public interface IShip
     {
         double GetSpeedInKbS();
-        double GetSpeedInMs();
         void SetSpeedInKbs(double newValue);
 
         double GetCourseInGrad();

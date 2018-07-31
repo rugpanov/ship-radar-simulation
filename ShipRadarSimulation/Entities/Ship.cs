@@ -23,11 +23,6 @@ namespace ShipRadarSimulation.Entities
             return mySpeedInKbS;
         }
 
-        public double GetSpeedInMs()
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetSpeedInKbs(double newValue)
         {
             mySpeedInKbS = newValue;
