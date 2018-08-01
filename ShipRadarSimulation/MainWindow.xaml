@@ -169,9 +169,9 @@
             <Menu Width="Auto" Height="20" Background="#3c3f41" DockPanel.Dock="Top" BorderThickness="1"
                   BorderBrush="#282828">
                 <MenuItem Header="Файл" Foreground="#bababa" Padding="6,0,6,0">
-                    <MenuItem Header="Открыть тренировку" Foreground="Black" />
-                    <MenuItem Header="Сохранить лог" Foreground="Black" />
-                    <Separator />
+                    <!-- <MenuItem Header="Открыть тренировку" Foreground="Black" /> -->
+                    <!-- <MenuItem Header="Сохранить лог" Foreground="Black" /> -->
+                    <!-- <Separator /> -->
                     <MenuItem Foreground="Black" Click="OnClickExit">
                         <MenuItem.Header>
                             <DockPanel>
