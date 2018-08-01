@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
 using ShipRadarSimulation.bll;
 using ShipRadarSimulation.Entities;
 
@@ -23,6 +25,9 @@ namespace ShipRadarSimulation
         private TextBlock[] myDegreeLables;
         private Line[] myLines;
         private readonly SimulationViewModel myDataContext;
+        private TextBox[] ourFields;
+        private TextBox[] allFields;
+        private Dictionary<string, double> movementParamsKV;
 
         private Ship myTargetShip;
         private Ship myShip;
@@ -46,6 +51,8 @@ namespace ShipRadarSimulation
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
+            InitTexboxes();
+            InitParamsDictionary();
 
             // ReSharper disable once ObjectCreationAsStatement
             new DispatcherTimer(
@@ -122,6 +129,53 @@ namespace ShipRadarSimulation
             }
         }
 
+        private void InitTexboxes()
+        {
+            ourFields = new TextBox[2];
+            allFields = new TextBox[6];
+            ourFields[0] = OurCourseInGrad;
+            ourFields[1] = OurSpeedInKnot;
+            allFields[0] = TargetDistanceKb;
+            allFields[1] = TargetBearingInGrad;
+            allFields[2] = TargetSpeedInKnot;
+            allFields[3] = TargetCourseInGrad;
+            allFields[4] = OurSpeedInKnot;
+            allFields[5] = OurCourseInGrad;
+            
+        }
+
+        private void InitParamsDictionary()
+        {
+            movementParamsKV = new Dictionary<string, double>()
+            {
+                {"OurCourseInGrad", 0},
+                {"OurSpeedInKnot", 0},
+                {"TargetDistanceKb", 0},
+                {"TargetBearingInGrad", 0},
+                {"TargetSpeedInKnot", 0},
+                {"TargetCourseInGrad", 0}
+            };
+
+        }
+
+        private void fieldsValidation(TextBox[] fields, out bool isValid)
+        {
+            isValid = true;
+            Regex regExp = new Regex(@"^[0-9]{1,3}((\.|,)[0-9]{1,4})?$");
+            for (var i = 0; i < fields.Length; i++)
+            {
+                if (!regExp.IsMatch(fields[i].Text))
+                {
+                    fields[i].BorderBrush = new SolidColorBrush(Colors.Red);
+                    isValid = false;
+                }
+                else
+                {
+                    movementParamsKV[fields[i].Name] = double.Parse(fields[i].Text.Replace(',', '.'));
+                    fields[i].BorderBrush = SystemColors.ControlDarkBrush;                   
+                }             
+            }
+        }
         private void DrawRadialLines15DegreeStep(double ellipse200Rad)
         {
             var degree = 0.0;
@@ -234,30 +288,10 @@ namespace ShipRadarSimulation
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
             if (myShip == null) return;
-            var isValid = true;
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
+            fieldsValidation(ourFields, out var isValid);
             if (isValid)
-            {                
-                myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
+            {
+                myShip.AddOrder(new Order(movementParamsKV["OurCourseInGrad"], movementParamsKV["OurSpeedInKnot"] / 360));
             }
         }
 
@@ -273,78 +307,17 @@ namespace ShipRadarSimulation
         }
 
         private bool InitBattleField()
-        {
-            var isValid = true;
-            if (!double.TryParse(TargetBearingInGrad.Text, out var targetBearing))
-            {
-                TargetBearingInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetBearingInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetDistanceKb.Text, out var targetDistance))
-            {
-                TargetDistanceKb.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetDistanceKb.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetSpeedInKnot.Text, out var targetSpeedInKnot))
-            {
-                TargetSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
-            if (!double.TryParse(TargetCourseInGrad.Text, out var targetCourseInGrad))
-            {
-                TargetCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
+        {    
+            fieldsValidation(allFields, out var isValid);
             if (isValid)
             {
-                var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
-                var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
-                myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-                myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
+                var targetX = movementParamsKV["TargetDistanceKb"] * Math.Sin(Utils.DegreeToRadian(movementParamsKV["TargetBearingInGrad"]));
+                var targetY = movementParamsKV["TargetDistanceKb"] * Math.Cos(Utils.DegreeToRadian(movementParamsKV["TargetBearingInGrad"]));
+                myTargetShip = new Ship(targetX, targetY, movementParamsKV["TargetSpeedInKnot"] / 360, movementParamsKV["TargetCourseInGrad"]);
+                myShip = new Ship(0, 0, movementParamsKV["OurSpeedInKnot"] / 360, movementParamsKV["OurCourseInGrad"], 
                     myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
                 Redraw();
             }
-            
             return isValid;
         }
 
