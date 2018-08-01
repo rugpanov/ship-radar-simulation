@@ -41,19 +41,9 @@ namespace ShipRadarSimulation.Entities
             return mySpeedInKbS;
         }
 
-        public void SetSpeedInKbs(double newValue)
-        {
-            mySpeedInKbS = newValue;
-        }
-
         public double GetCourseInGrad()
         {
             return myCourseInGrad;
-        }
-
-        public void SetCourseInGrad(double newValue)
-        {
-            myCourseInGrad = newValue;
         }
 
         public double GetX()
