@@ -67,6 +67,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bll\Constants.cs" />
     <Compile Include="Bll\SimulationController.cs" />
     <Compile Include="Bll\SimulationViewModel.cs" />
     <Compile Include="Bll\Timer.cs" />

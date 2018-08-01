@@ -340,7 +340,8 @@ namespace ShipRadarSimulation
                 var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
                 var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
                 myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-                myShip = new Ship(0, 0, speedInKnot / 360, theCourse);
+                myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
+                    myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
                 Redraw();
             }
             
