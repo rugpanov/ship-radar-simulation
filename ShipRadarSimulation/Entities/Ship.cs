@@ -3,7 +3,7 @@ using ShipRadarSimulation.bll;
 
 namespace ShipRadarSimulation.Entities
 {
-    public class Ship : IShip
+    public class Ship
     {
         private double myX;
         private double myY;

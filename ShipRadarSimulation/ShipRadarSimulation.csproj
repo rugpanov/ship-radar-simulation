@@ -72,7 +72,6 @@
     <Compile Include="Bll\SimulationViewModel.cs" />
     <Compile Include="Bll\Timer.cs" />
     <Compile Include="Bll\Utils.cs" />
-    <Compile Include="Entities\IShip.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Ship.cs" />
     <Compile Include="MainWindow.xaml.cs">
