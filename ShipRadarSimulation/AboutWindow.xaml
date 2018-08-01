@@ -1,0 +1,51 @@
+﻿<Window x:Class="ShipRadarSimulation.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+        Title="AboutWindow" Height="200" Width="400">
+    <Window.Resources>
+        <SolidColorBrush x:Key="DarkSquareColor" Color="#18FFFFFF" />
+        <SolidColorBrush x:Key="LightSquareColor" Color="#19FFFFFF" Opacity="0.91" />
+        <DrawingBrush x:Key="StylishBrush" Viewport="0,0,20,20" ViewportUnits="Absolute" Stretch="None" TileMode="Tile">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource DarkSquareColor}">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,10,10" />
+                                <RectangleGeometry Rect="10,10,10,10" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource LightSquareColor}">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="10,0,10,10" />
+                                <RectangleGeometry Rect="0,10,10,10" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+    </Window.Resources>
+    <Window.Background>
+        <StaticResource ResourceKey="StylishBrush" />
+    </Window.Background>
+    <Grid Background="{StaticResource StylishBrush}">
+        <TextBlock
+            Margin="10,5,10,0"
+            FontWeight="Normal"
+            FontSize="14"
+            Foreground="#bababa"
+            TextWrapping="Wrap"
+            TextAlignment="Center"
+            IsEnabled="False"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Text="Программа разработана курсантами военной кафедры Университета ИТМО. Для служебного пользования." />
+    </Grid>
+</Window>

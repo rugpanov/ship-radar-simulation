@@ -402,5 +402,11 @@ namespace ShipRadarSimulation
                 OnClickUpPouseSimulationButton(null, null);
             }
         }
+
+        private void OnClickAbout(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.Show();
+        }
     }
 }

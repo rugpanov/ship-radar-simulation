@@ -181,7 +181,7 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Помощь" Foreground="#bababa" Padding="6,0,6,0">
-                    <MenuItem Header="О программе" Foreground="Black" />
+                    <MenuItem Header="О программе" Foreground="Black" Click="OnClickAbout" />
                 </MenuItem>
             </Menu>
             <StackPanel />
