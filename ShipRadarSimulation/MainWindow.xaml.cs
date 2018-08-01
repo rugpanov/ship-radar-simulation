@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -61,9 +62,9 @@ namespace ShipRadarSimulation
         private void TimerTick(object sender, EventArgs e)
         {
             myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
-            var  timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
+            var timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
             if (myOldTimeInSec == timeInSec) return;
-            
+
             myOldTimeInSec = timeInSec;
             myShip.ProcessOneSecond();
             myTargetShip.ProcessOneSecond();
@@ -234,37 +235,16 @@ namespace ShipRadarSimulation
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
             if (myShip == null) return;
-            var isValid = true;
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
 
-            if (isValid)
-            {                
-                myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
-            }
+            var speedInKnot = double.Parse(OurSpeedInKnot.Text.Replace(",", "."));
+            var theCourse = double.Parse(OurCourseInGrad.Text.Replace(",", "."));
+            myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
-            var exitStatus = InitBattleField();
-            if (!exitStatus) return;
+            InitBattleField();
+
             myDataContext.ShowStartButton = false;
             myDataContext.ShowPauseSimulation = true;
             myDataContext.ShowStopButton = true;
@@ -272,80 +252,21 @@ namespace ShipRadarSimulation
             myShownTimer.Start();
         }
 
-        private bool InitBattleField()
+        private void InitBattleField()
         {
-            var isValid = true;
-            if (!double.TryParse(TargetBearingInGrad.Text, out var targetBearing))
-            {
-                TargetBearingInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetBearingInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetDistanceKb.Text, out var targetDistance))
-            {
-                TargetDistanceKb.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetDistanceKb.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(TargetSpeedInKnot.Text, out var targetSpeedInKnot))
-            {
-                TargetSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
+            var targetBearing = double.Parse(TargetBearingInGrad.Text.Replace(",", "."));
+            var targetDistance = double.Parse(TargetDistanceKb.Text.Replace(",", "."));
+            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text.Replace(",", "."));
+            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text.Replace(",", "."));
+            var speedInKnot = double.Parse(OurSpeedInKnot.Text.Replace(",", "."));
+            var theCourse = double.Parse(OurCourseInGrad.Text.Replace(",", "."));
 
-            if (!double.TryParse(TargetCourseInGrad.Text, out var targetCourseInGrad))
-            {
-                TargetCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                TargetCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
-            {
-                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-            
-            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
-            {
-                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
-                isValid = false;
-            }
-            else
-            {
-                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
-            }
-
-            if (isValid)
-            {
-                var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
-                var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
-                myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-                myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
-                    myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
-                Redraw();
-            }
-            
-            return isValid;
+            var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
+            var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
+            myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
+            myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
+                myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
+            Redraw();
         }
 
         private void OnClickResetSimulationButton(object sender, RoutedEventArgs e)
@@ -360,7 +281,7 @@ namespace ShipRadarSimulation
             myDataContext.TargetDistance = DefaultTargetDistance;
             myDataContext.TargetBearing = DefaultTargetBearing;
             Redraw();
-            
+
             myShownTimer.Reset();
             myDataContext.TimerTimeInMs = 0;
         }
@@ -369,7 +290,7 @@ namespace ShipRadarSimulation
         {
             myDataContext.ShowResumeSimulation = true;
             myDataContext.ShowPauseSimulation = false;
-            
+
             myShownTimer.Stop();
         }
 
@@ -377,7 +298,7 @@ namespace ShipRadarSimulation
         {
             myDataContext.ShowResumeSimulation = false;
             myDataContext.ShowPauseSimulation = true;
-            
+
             myShownTimer.Start();
         }
 
@@ -407,6 +328,27 @@ namespace ShipRadarSimulation
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.Show();
+        }
+
+        private void DoubleValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = (TextBox) sender;
+            var regExp = new Regex(@"^[0-9]+(\.([0-9]+)?)?$");
+            e.Handled = !regExp.IsMatch(textBox.Text + e.Text);
+        }
+
+        private void CourseValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            var textBox = (TextBox) sender;
+            var regExp = new Regex(@"^[0-9]{1,3}(\.([0-9]{1,4})?)?$");
+            var isValid = regExp.IsMatch(textBox.Text + e.Text);
+            if (isValid)
+            {
+                var newCourse = double.Parse(textBox.Text + e.Text);
+                isValid = newCourse <= 360;
+            }
+
+            e.Handled = !isValid;
         }
     }
 }

@@ -252,6 +252,7 @@
                            Text="Скорость" />
                 <TextBox Grid.Column="1"
                          Grid.Row="0"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="OurSpeedInKnot"
                          Text="10" />
                 <TextBlock Grid.Column="2"
@@ -265,6 +266,7 @@
                            Text="Курс" />
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
+                         PreviewTextInput="CourseValidationTextBox"
                          Name="OurCourseInGrad"
                          Text="270" />
                 <TextBlock Grid.Column="2"
@@ -291,6 +293,7 @@
                                Text="ω" />
                     <TextBox Grid.Column="1"
                              Text="{Binding Path=MyAngularVelocityInGradSec}"
+                             PreviewTextInput="DoubleValidationTextBox"
                              Margin="2,5,7,0" />
                     <TextBlock Grid.Column="2"
                                Style="{StaticResource InlineText}"
@@ -302,6 +305,7 @@
                                Text="a" />
                     <TextBox Grid.Column="4"
                              Text="{Binding Path=MyAccelerationInKnotSec}"
+                             PreviewTextInput="DoubleValidationTextBox"
                              Margin="2,5,7,0" />
                     <TextBlock Grid.Column="5"
                                Style="{StaticResource InlineText}"
@@ -347,6 +351,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="0"
                          IsEnabled="{Binding Path=ShowStartButton}"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="TargetDistanceKb"
                          Text="{Binding Path=TargetDistance}" />
                 <TextBlock Grid.Column="2"
@@ -360,6 +365,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
                          IsEnabled="{Binding Path=ShowStartButton}"
+                         PreviewTextInput="CourseValidationTextBox"
                          Name="TargetBearingInGrad"
                          Text="{Binding Path=TargetBearing}" />
                 <TextBlock Grid.Column="2"
@@ -374,6 +380,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="2"
                          IsEnabled="{Binding Path=ShowStartButton}"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="TargetSpeedInKnot"
                          Text="10" />
                 <TextBlock Grid.Column="2"
@@ -388,6 +395,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="3"
                          IsEnabled="{Binding Path=ShowStartButton}"
+                         PreviewTextInput="CourseValidationTextBox"
                          Name="TargetCourseInGrad"
                          Text="90" />
                 <TextBlock Grid.Column="2"
