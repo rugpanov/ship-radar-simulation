@@ -28,12 +28,8 @@ namespace ShipRadarSimulation.bll
             {
                 myShowStopButton = value;
                 NotifyPropertyChanged();
-                NotifyPropertyChanged("DontShowStopButton");
             }
         }
-
-        // ReSharper disable once UnusedMember.Global
-        public bool DontShowStopButton => !myShowStopButton;
 
         private double myAngularVelocityInGradSec = Constants.DefaultAngularVelocityInGradSec;
 

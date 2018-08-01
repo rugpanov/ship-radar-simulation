@@ -274,7 +274,7 @@
                 <Grid Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Grid.Row="2"
-                      Visibility="{Binding Path=DontShowStopButton, Converter={StaticResource BoolToVis}}">
+                      Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
