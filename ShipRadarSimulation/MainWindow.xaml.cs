@@ -18,9 +18,9 @@ namespace ShipRadarSimulation
     {
         private const int DrawIndent = 50;
         private const int DotSize = 4;
-        private const int radialLinesCount = 12;
+        private const int RadialLinesCount = 12;
         private Ellipse[] myEllipses;
-        private TextBlock[] degreeLable;
+        private TextBlock[] myDegreeLables;
         private Line[] myLines;
         private readonly SimulationViewModel myDataContext;
 
@@ -92,8 +92,8 @@ namespace ShipRadarSimulation
 
         private void InitLines()
         {
-            myLines = new Line[radialLinesCount];
-            for (var i = 0; i < radialLinesCount; i++)
+            myLines = new Line[RadialLinesCount];
+            for (var i = 0; i < RadialLinesCount; i++)
             {
                 var line = new Line
                 {
@@ -108,15 +108,15 @@ namespace ShipRadarSimulation
         private void InitDegreeLables()
         {
             var degree = 90;
-            degreeLable = new TextBlock[radialLinesCount * 2];
-            for (var i = 0; i < degreeLable.Length; i++, degree += 15)
+            myDegreeLables = new TextBlock[RadialLinesCount * 2];
+            for (var i = 0; i < myDegreeLables.Length; i++, degree += 15)
             {
-                degreeLable[i] = new TextBlock
+                myDegreeLables[i] = new TextBlock
                 {
                     Text = degree + "°",
                     Foreground = new SolidColorBrush(Colors.Green)
                 };
-                MyCanvas.Children.Add(degreeLable[i]);
+                MyCanvas.Children.Add(myDegreeLables[i]);
                 if (degree == 345)
                     degree = -15;
             }
@@ -138,20 +138,20 @@ namespace ShipRadarSimulation
                 {
                     if (i == 0)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) + 3);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 8);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) + 3);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 8);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 7);
                     }
                     else
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree));
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree));
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 14);
                     }
                 }
@@ -159,29 +159,29 @@ namespace ShipRadarSimulation
                 {
                     if (i == 11)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 7);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 25);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 7);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) + 3);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 10);
                     }
                     else if (i == 6)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 12);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 12);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 5);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 17);
                     }
                     else
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 20);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) + 1);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 20);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) + 1);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree));
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 17);
                     }
                 }
