@@ -90,11 +90,13 @@ namespace ShipRadarSimulation.Entities
                 return;
             }
 
-            if (deltaCourse > myAngularVelocityInGradSec)
+            if (deltaCourse > myAngularVelocityInGradSec && deltaCourse < 180 ||
+                deltaCourse < myAngularVelocityInGradSec && deltaCourse < -180)
             {
                 myCourseInGrad -= myAngularVelocityInGradSec;
             }
-            else if (deltaCourse < -myAngularVelocityInGradSec)
+            else if (deltaCourse < -myAngularVelocityInGradSec && deltaCourse > -180 ||
+                     deltaCourse > myAngularVelocityInGradSec && deltaCourse > 180)
             {
                 myCourseInGrad += myAngularVelocityInGradSec;
             }
@@ -114,6 +116,16 @@ namespace ShipRadarSimulation.Entities
             else
             {
                 mySpeedInKbS = myOrder.NewSpeed;
+            }
+
+            if (myCourseInGrad >= 360)
+            {
+                myCourseInGrad -= 360;
+            }
+            
+            if (myCourseInGrad < 0)
+            {
+                myCourseInGrad += 360;
             }
         }
 
