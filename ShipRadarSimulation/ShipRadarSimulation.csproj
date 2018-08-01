@@ -59,19 +59,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="AboutWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AboutWindow.xaml.cs">
+      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Bll\Constants.cs" />
     <Compile Include="Bll\SimulationController.cs" />
     <Compile Include="Bll\SimulationViewModel.cs" />
     <Compile Include="Bll\Timer.cs" />
     <Compile Include="Bll\Utils.cs" />
-    <Compile Include="Entities\IShip.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\Ship.cs" />
     <Compile Include="MainWindow.xaml.cs">

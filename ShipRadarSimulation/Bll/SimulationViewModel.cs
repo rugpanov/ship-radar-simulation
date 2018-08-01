@@ -22,6 +22,7 @@ namespace ShipRadarSimulation.bll
 
         public bool ShowStopButton
         {
+            // ReSharper disable once UnusedMember.Global
             get => myShowStopButton;
             set
             {
@@ -30,6 +31,30 @@ namespace ShipRadarSimulation.bll
             }
         }
 
+        private double myAngularVelocityInGradSec = Constants.DefaultAngularVelocityInGradSec;
+
+        public double MyAngularVelocityInGradSec
+        {
+            get => myAngularVelocityInGradSec;
+            set
+            {
+                myAngularVelocityInGradSec = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
+        private double myAccelerationInKnotSecInKnotSec = Constants.DefaultAccelerationInKnotSec;
+
+        public double MyAccelerationInKnotSec
+        {
+            get => myAccelerationInKnotSecInKnotSec;
+            set
+            {
+                myAccelerationInKnotSecInKnotSec = value;
+                NotifyPropertyChanged();
+            }
+        }
+        
         private bool myShowPauseSimulation;
 
         public bool ShowPauseSimulation

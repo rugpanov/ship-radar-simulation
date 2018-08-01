@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -20,12 +18,10 @@ namespace ShipRadarSimulation
     {
         private const int DrawIndent = 50;
         private const int DotSize = 4;
-        private const int radialLinesCount = 12;
+        private const int RadialLinesCount = 12;
         private Ellipse[] myEllipses;
-        private TextBlock[] degreeLable;
+        private TextBlock[] myDegreeLables;
         private Line[] myLines;
-        private TextBox[] ourFields;
-        private TextBox[] allFields;
         private readonly SimulationViewModel myDataContext;
 
         private Ship myTargetShip;
@@ -50,7 +46,6 @@ namespace ShipRadarSimulation
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
-            InitTexboxes();
 
             // ReSharper disable once ObjectCreationAsStatement
             new DispatcherTimer(
@@ -97,8 +92,8 @@ namespace ShipRadarSimulation
 
         private void InitLines()
         {
-            myLines = new Line[radialLinesCount];
-            for (var i = 0; i < radialLinesCount; i++)
+            myLines = new Line[RadialLinesCount];
+            for (var i = 0; i < RadialLinesCount; i++)
             {
                 var line = new Line
                 {
@@ -113,15 +108,15 @@ namespace ShipRadarSimulation
         private void InitDegreeLables()
         {
             var degree = 90;
-            degreeLable = new TextBlock[radialLinesCount * 2];
-            for (var i = 0; i < degreeLable.Length; i++, degree += 15)
+            myDegreeLables = new TextBlock[RadialLinesCount * 2];
+            for (var i = 0; i < myDegreeLables.Length; i++, degree += 15)
             {
-                degreeLable[i] = new TextBlock
+                myDegreeLables[i] = new TextBlock
                 {
                     Text = degree + "°",
                     Foreground = new SolidColorBrush(Colors.Green)
                 };
-                MyCanvas.Children.Add(degreeLable[i]);
+                MyCanvas.Children.Add(myDegreeLables[i]);
                 if (degree == 345)
                     degree = -15;
             }
@@ -143,20 +138,20 @@ namespace ShipRadarSimulation
                 {
                     if (i == 0)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) + 3);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 8);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) + 3);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 8);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 7);
                     }
                     else
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree));
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree));
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 14);
                     }
                 }
@@ -164,29 +159,29 @@ namespace ShipRadarSimulation
                 {
                     if (i == 11)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 25);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 7);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 25);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) - 7);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) + 3);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 10);
                     }
                     else if (i == 6)
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 12);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 12);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree));
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree) - 5);
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 17);
                     }
                     else
                     {
-                        Canvas.SetLeft(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 20);
-                        Canvas.SetTop(degreeLable[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) + 1);
-                        Canvas.SetLeft(degreeLable[i + myLines.Length],
+                        Canvas.SetLeft(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Cos(degree) - 20);
+                        Canvas.SetTop(myDegreeLables[i], DrawIndent + labelRad + labelRad * Math.Sin(degree) + 1);
+                        Canvas.SetLeft(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Cos(degree));
-                        Canvas.SetTop(degreeLable[i + myLines.Length],
+                        Canvas.SetTop(myDegreeLables[i + myLines.Length],
                             DrawIndent + labelRad - labelRad * Math.Sin(degree) - 17);
                     }
                 }
@@ -236,49 +231,34 @@ namespace ShipRadarSimulation
             DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
-        private void InitTexboxes()
-        {
-            ourFields = new TextBox[2];
-            allFields = new TextBox[6];
-            ourFields[0] = OurCourseInGrad;
-            ourFields[1] = OurSpeedInKnot; 
-            allFields[0] = TargetDistanceKb;
-            allFields[1] = TargetBearingInGrad;            
-            allFields[2] = TargetSpeedInKnot;
-            allFields[3] = TargetCourseInGrad;            
-            allFields[4] = OurSpeedInKnot;
-            allFields[5] = OurCourseInGrad;          
-        }
-        private double[] fieldsValidation(TextBox[] fields, double[] movementParams, out bool isValid)
-        {           
-            isValid = true;
-            Regex regExp = new Regex(@"^[0-9]{1,3}((\.|,)[0-9]{1,4})?$");
-            for (var i = 0; i < fields.Length; i++)
-            {
-                if (!regExp.IsMatch(fields[i].Text))
-                {                   
-                    fields[i].BorderBrush = new SolidColorBrush(Colors.Red);
-                    isValid = false;
-                }
-                else
-                {
-                    double.TryParse(fields[i].Text.Replace(',', '.'), out movementParams[i]);
-                    fields[i].BorderBrush = SystemColors.ControlDarkBrush;                                  
-                }
-            }
-            return movementParams;
-        }
-
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
         {
-            if (myShip == null) return;      
-            double[] movementParams = new double[ourFields.Length];;
-            movementParams = fieldsValidation(ourFields, movementParams, out var isValid);
+            if (myShip == null) return;
+            var isValid = true;
+            
+            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
+            {
+                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
+            {
+                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+
             if (isValid)
             {                
-                myShip.AddOrder(new Order(movementParams[0],  movementParams[1] / 360));
+                myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
             }
-            
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
@@ -294,14 +274,74 @@ namespace ShipRadarSimulation
 
         private bool InitBattleField()
         {
-            double[] movementParams = new double[allFields.Length];;
-            movementParams = fieldsValidation(allFields, movementParams, out var isValid);
+            var isValid = true;
+            if (!double.TryParse(TargetBearingInGrad.Text, out var targetBearing))
+            {
+                TargetBearingInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetBearingInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(TargetDistanceKb.Text, out var targetDistance))
+            {
+                TargetDistanceKb.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetDistanceKb.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(TargetSpeedInKnot.Text, out var targetSpeedInKnot))
+            {
+                TargetSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+
+            if (!double.TryParse(TargetCourseInGrad.Text, out var targetCourseInGrad))
+            {
+                TargetCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                TargetCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(OurSpeedInKnot.Text, out var speedInKnot))
+            {
+                OurSpeedInKnot.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurSpeedInKnot.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+            
+            if (!double.TryParse(OurCourseInGrad.Text, out var theCourse))
+            {
+                OurCourseInGrad.BorderBrush = new SolidColorBrush(Colors.Red);
+                isValid = false;
+            }
+            else
+            {
+                OurCourseInGrad.BorderBrush = SystemColors.ControlDarkBrush;
+            }
+
             if (isValid)
             {
-                var targetX = movementParams[0] * Math.Sin(Utils.DegreeToRadian(movementParams[1]));
-                var targetY = movementParams[0] * Math.Cos(Utils.DegreeToRadian(movementParams[1]));
-                myTargetShip = new Ship(targetX, targetY, movementParams[2] / 360, movementParams[3]);
-                myShip = new Ship(0, 0, movementParams[4] / 360, movementParams[5]);
+                var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
+                var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
+                myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
+                myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
+                    myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
                 Redraw();
             }
             
@@ -361,6 +401,12 @@ namespace ShipRadarSimulation
             {
                 OnClickUpPouseSimulationButton(null, null);
             }
+        }
+
+        private void OnClickAbout(object sender, RoutedEventArgs e)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.Show();
         }
     }
 }

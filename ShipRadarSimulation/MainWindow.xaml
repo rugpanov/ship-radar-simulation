@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="Пеленг / Дистанция"
         Height="665" Width="925"
         KeyDown="SpaceIsPressed"
         MinHeight="665" MinWidth="925" d:DataContext="{d:DesignInstance}">
@@ -169,9 +169,9 @@
             <Menu Width="Auto" Height="20" Background="#3c3f41" DockPanel.Dock="Top" BorderThickness="1"
                   BorderBrush="#282828">
                 <MenuItem Header="Файл" Foreground="#bababa" Padding="6,0,6,0">
-                    <MenuItem Header="Открыть тренировку" Foreground="Black" />
-                    <MenuItem Header="Сохранить лог" Foreground="Black" />
-                    <Separator />
+                    <!-- <MenuItem Header="Открыть тренировку" Foreground="Black" /> -->
+                    <!-- <MenuItem Header="Сохранить лог" Foreground="Black" /> -->
+                    <!-- <Separator /> -->
                     <MenuItem Foreground="Black" Click="OnClickExit">
                         <MenuItem.Header>
                             <DockPanel>
@@ -181,13 +181,13 @@
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Помощь" Foreground="#bababa" Padding="6,0,6,0">
-                    <MenuItem Header="О программе" Foreground="Black" />
+                    <MenuItem Header="О программе" Foreground="Black" Click="OnClickAbout" />
                 </MenuItem>
             </Menu>
             <StackPanel />
         </DockPanel>
 
-         <GroupBox Grid.Row="1" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
+        <GroupBox Grid.Row="1" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
             <GroupBox.Header>
                 <TextBlock Text="Параметры движения ПЛ" Style="{StaticResource TitleText}" Margin="0" />
             </GroupBox.Header>
@@ -229,7 +229,7 @@
                            Text="°" />
             </Grid>
         </GroupBox>
-        
+
         <GroupBox Grid.Row="2" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
             <GroupBox.Header>
                 <TextBlock Text="Маневрирование ПЛ" Style="{StaticResource TitleText}" Margin="0" />
@@ -271,7 +271,43 @@
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
                            Text="°" />
+                <Grid Grid.Column="0"
+                      Grid.ColumnSpan="3"
+                      Grid.Row="2"
+                      Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0"
+                               Style="{StaticResource InlineText}"
+                               Text="ω" />
+                    <TextBox Grid.Column="1"
+                             Text="{Binding Path=MyAngularVelocityInGradSec}"
+                             Margin="2,5,7,0" />
+                    <TextBlock Grid.Column="2"
+                               Style="{StaticResource InlineText}"
+                               Text="°/с"
+                               Margin="2,5,15,0" />
 
+                    <TextBlock Grid.Column="3"
+                               Style="{StaticResource InlineText}"
+                               Text="a" />
+                    <TextBox Grid.Column="4"
+                             Text="{Binding Path=MyAccelerationInKnotSec}"
+                             Margin="2,5,7,0" />
+                    <TextBlock Grid.Column="5"
+                               Style="{StaticResource InlineText}"
+                               Text="уз/с"
+                               Margin="2,5,0,0" />
+                </Grid>
                 <Button Grid.Column="0"
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
@@ -431,8 +467,8 @@
                            VerticalAlignment="Center"
                            Foreground="#bababa"
                            FontFamily="Lucida Console"
-                           FontSize="35" 
-                           Text="{Binding Path=TimerTimePresentable}"/>
+                           FontSize="35"
+                           Text="{Binding Path=TimerTimePresentable}" />
             </Grid>
         </GroupBox>
     </Grid>
