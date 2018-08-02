@@ -23,6 +23,7 @@ namespace ShipRadarSimulation
         private Ellipse[] myEllipses;
         private TextBlock[] myDegreeLables;
         private Line[] myLines;
+        private Line myCourceLines;
         private readonly SimulationViewModel myDataContext;
 
         private Ship myTargetShip;
@@ -72,6 +73,14 @@ namespace ShipRadarSimulation
                 MyCanvas.Children.Add(line);
                 myLines[i] = line;
             }
+            
+            myCourceLines = new Line
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 1
+            };
+            MyCanvas.Children.Add(myCourceLines);
+            Panel.SetZIndex(myCourceLines, 100);
         }
 
         private void InitEllipses(int num)
@@ -134,6 +143,7 @@ namespace ShipRadarSimulation
             var minSize = Math.Min(canvasSize.Height, canvasSize.Width);
             var ellipse200Rad = (minSize - 2 * DrawIndent) / 2;
             var scale = ellipse200Rad / 200;
+            var centerXy = minSize / 2;
 
             for (var i = 0; i < 8; i++)
             {
@@ -144,12 +154,11 @@ namespace ShipRadarSimulation
                 ellipse.Height = ellipse200Rad * (i + 1) / 4;
             }
 
-            Canvas.SetTop(EllipseCenter, minSize / 2 - 2);
-            Canvas.SetLeft(EllipseCenter, minSize / 2 - 2);
+            Canvas.SetTop(EllipseCenter, centerXy - 2);
+            Canvas.SetLeft(EllipseCenter, centerXy - 2);
             EllipseCenter.Width = DotSize;
             EllipseCenter.Height = DotSize;
             Panel.SetZIndex(EllipseCenter, 240);
-
 
             var movementY = myTargetShip.GetY() - myShip.GetY();
             var movementX = myTargetShip.GetX() - myShip.GetX();
@@ -160,6 +169,12 @@ namespace ShipRadarSimulation
             EllipseEnemy.Height = DotSize;
             Panel.SetZIndex(EllipseEnemy, 239);
 
+            var courseInRadian = Utils.DegreeToRadian(myShip.GetCourseInGrad());
+            myCourceLines.X1 = centerXy;
+            myCourceLines.Y1 = centerXy;
+            myCourceLines.X2 = DrawIndent + ellipse200Rad + ellipse200Rad * Math.Sin(courseInRadian);
+            myCourceLines.Y2 = DrawIndent + ellipse200Rad - ellipse200Rad * Math.Cos(courseInRadian);
+            
             DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
