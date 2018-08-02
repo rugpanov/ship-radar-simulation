@@ -59,20 +59,19 @@ namespace ShipRadarSimulation
             myShownTimer = new Timer();
         }
 
-        private void TimerTick(object sender, EventArgs e)
+        private void InitLines()
         {
-            myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
-            var timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
-            if (myOldTimeInSec == timeInSec) return;
-
-            myOldTimeInSec = timeInSec;
-            myShip.ProcessOneSecond();
-            myTargetShip.ProcessOneSecond();
-            myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
-            myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
-            myDataContext.MyCourseInGrad = myShip.GetCourseInGrad();
-            myDataContext.MySpeedInKnot = myShip.GetSpeedInKbS() * 360;
-            Redraw();
+            myLines = new Line[RadialLinesCount];
+            for (var i = 0; i < RadialLinesCount; i++)
+            {
+                var line = new Line
+                {
+                    Stroke = Brushes.Green,
+                    StrokeThickness = 1
+                };
+                MyCanvas.Children.Add(line);
+                myLines[i] = line;
+            }
         }
 
         private void InitEllipses(int num)
@@ -90,22 +89,7 @@ namespace ShipRadarSimulation
                 myEllipses[i] = ellipse;
             }
         }
-
-        private void InitLines()
-        {
-            myLines = new Line[RadialLinesCount];
-            for (var i = 0; i < RadialLinesCount; i++)
-            {
-                var line = new Line
-                {
-                    Stroke = Brushes.Green,
-                    StrokeThickness = 1
-                };
-                MyCanvas.Children.Add(line);
-                myLines[i] = line;
-            }
-        }
-
+        
         private void InitDegreeLables()
         {
             var degree = 90;
@@ -121,6 +105,62 @@ namespace ShipRadarSimulation
                 if (degree == 345)
                     degree = -15;
             }
+        }
+        
+        private void TimerTick(object sender, EventArgs e)
+        {
+            myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
+            var timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
+            if (myOldTimeInSec == timeInSec) return;
+
+            myOldTimeInSec = timeInSec;
+            myShip.ProcessOneSecond();
+            myTargetShip.ProcessOneSecond();
+            myDataContext.TargetDistance = myShip.MeasureDistance(myTargetShip);
+            myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
+            myDataContext.MyCourseInGrad = myShip.GetCourseInGrad();
+            myDataContext.MySpeedInKnot = myShip.GetSpeedInKbS() * 360;
+            Redraw();
+        }
+
+        private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Redraw();
+        }
+
+        private void Redraw()
+        {
+            var canvasSize = MyCanvas.RenderSize;
+            var minSize = Math.Min(canvasSize.Height, canvasSize.Width);
+            var ellipse200Rad = (minSize - 2 * DrawIndent) / 2;
+            var scale = ellipse200Rad / 200;
+
+            for (var i = 0; i < 8; i++)
+            {
+                var ellipse = myEllipses[i];
+                Canvas.SetTop(ellipse, DrawIndent + ellipse200Rad * (8 - (i + 1)) / 8);
+                Canvas.SetLeft(ellipse, DrawIndent + ellipse200Rad * (8 - (i + 1)) / 8);
+                ellipse.Width = ellipse200Rad * (i + 1) / 4;
+                ellipse.Height = ellipse200Rad * (i + 1) / 4;
+            }
+
+            Canvas.SetTop(EllipseCenter, minSize / 2 - 2);
+            Canvas.SetLeft(EllipseCenter, minSize / 2 - 2);
+            EllipseCenter.Width = DotSize;
+            EllipseCenter.Height = DotSize;
+            Panel.SetZIndex(EllipseCenter, 240);
+
+
+            var movementY = myTargetShip.GetY() - myShip.GetY();
+            var movementX = myTargetShip.GetX() - myShip.GetX();
+
+            Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
+            Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
+            EllipseEnemy.Width = DotSize;
+            EllipseEnemy.Height = DotSize;
+            Panel.SetZIndex(EllipseEnemy, 239);
+
+            DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
         private void DrawRadialLines15DegreeStep(double ellipse200Rad)
@@ -189,47 +229,6 @@ namespace ShipRadarSimulation
 
                 degree = Utils.RadianToDegree(degree);
             }
-        }
-
-        private void CanvasSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            Redraw();
-        }
-
-        private void Redraw()
-        {
-            var canvasSize = MyCanvas.RenderSize;
-            var minSize = Math.Min(canvasSize.Height, canvasSize.Width);
-            var ellipse200Rad = (minSize - 2 * DrawIndent) / 2;
-            var scale = ellipse200Rad / 200;
-
-            for (var i = 0; i < 8; i++)
-            {
-                var ellipse = myEllipses[i];
-                Canvas.SetTop(ellipse, DrawIndent + ellipse200Rad * (8 - (i + 1)) / 8);
-                Canvas.SetLeft(ellipse, DrawIndent + ellipse200Rad * (8 - (i + 1)) / 8);
-                ellipse.Width = ellipse200Rad * (i + 1) / 4;
-                ellipse.Height = ellipse200Rad * (i + 1) / 4;
-            }
-
-            Canvas.SetTop(EllipseCenter, minSize / 2 - 2);
-            Canvas.SetLeft(EllipseCenter, minSize / 2 - 2);
-            EllipseCenter.Width = DotSize;
-            EllipseCenter.Height = DotSize;
-            Panel.SetZIndex(EllipseCenter, 240);
-
-
-            var movementY = myTargetShip.GetY() - myShip.GetY();
-            var movementX = myTargetShip.GetX() - myShip.GetX();
-
-            Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
-            Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
-            EllipseEnemy.Width = DotSize;
-            EllipseEnemy.Height = DotSize;
-            Panel.SetZIndex(EllipseEnemy, 239);
-
-
-            DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
         private void OnClickRequestChangeParameters(object sender, RoutedEventArgs e)
@@ -302,11 +301,6 @@ namespace ShipRadarSimulation
             myShownTimer.Start();
         }
 
-        private void OnClickExit(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
         private void SpaceIsPressed(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Space) return;
@@ -349,6 +343,11 @@ namespace ShipRadarSimulation
             }
 
             e.Handled = !isValid;
+        }
+        
+        private void OnClickExit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
