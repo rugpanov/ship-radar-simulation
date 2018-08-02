@@ -310,8 +310,8 @@ namespace ShipRadarSimulation
         {
             if (myShip == null) return;
 
-            var speedInKnot = double.Parse(OurSpeedInKnot.Text);
-            var theCourse = double.Parse(OurCourseInGrad.Text);
+            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text) : 0;
+            var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text) : 0;
             myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
         }
 
@@ -328,12 +328,12 @@ namespace ShipRadarSimulation
 
         private void InitBattleField()
         {
-            var targetBearing = double.Parse(TargetBearingInGrad.Text);
-            var targetDistance = double.Parse(TargetDistanceKb.Text);
-            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text);
-            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
-            var speedInKnot = double.Parse(OurSpeedInKnot.Text);
-            var theCourse = double.Parse(OurCourseInGrad.Text);
+            var targetBearing = TargetBearingInGrad.Text != "" ? double.Parse(TargetBearingInGrad.Text) : 0;
+            var targetDistance = TargetDistanceKb.Text != "" ? double.Parse(TargetDistanceKb.Text) : 0;
+            var targetSpeedInKnot = TargetSpeedInKnot.Text != "" ? double.Parse(TargetSpeedInKnot.Text) : 0;
+            var targetCourseInGrad = TargetCourseInGrad.Text != "" ? double.Parse(TargetCourseInGrad.Text) : 0;
+            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text) : 0;
+            var theCourse = OurCourseInGrad.Text != "" ?double.Parse(OurCourseInGrad.Text) : 0;
 
             var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
             var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
@@ -409,6 +409,14 @@ namespace ShipRadarSimulation
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void ReplaceEmptyWithZero(object sender, EventArgs e)
+        {
+            if (((TextBox)sender).Text == "")
+            {
+                ((TextBox)sender).Text = "0";
+            }
         }
     }
 }
