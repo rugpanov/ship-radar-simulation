@@ -310,8 +310,8 @@ namespace ShipRadarSimulation
         {
             if (myShip == null) return;
 
-            var speedInKnot = double.Parse(OurSpeedInKnot.Text.Replace(",", "."));
-            var theCourse = double.Parse(OurCourseInGrad.Text.Replace(",", "."));
+            var speedInKnot = double.Parse(OurSpeedInKnot.Text);
+            var theCourse = double.Parse(OurCourseInGrad.Text);
             myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
         }
 
@@ -328,12 +328,12 @@ namespace ShipRadarSimulation
 
         private void InitBattleField()
         {
-            var targetBearing = double.Parse(TargetBearingInGrad.Text.Replace(",", "."));
-            var targetDistance = double.Parse(TargetDistanceKb.Text.Replace(",", "."));
-            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text.Replace(",", "."));
-            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text.Replace(",", "."));
-            var speedInKnot = double.Parse(OurSpeedInKnot.Text.Replace(",", "."));
-            var theCourse = double.Parse(OurCourseInGrad.Text.Replace(",", "."));
+            var targetBearing = double.Parse(TargetBearingInGrad.Text);
+            var targetDistance = double.Parse(TargetDistanceKb.Text);
+            var targetSpeedInKnot = double.Parse(TargetSpeedInKnot.Text);
+            var targetCourseInGrad = double.Parse(TargetCourseInGrad.Text);
+            var speedInKnot = double.Parse(OurSpeedInKnot.Text);
+            var theCourse = double.Parse(OurCourseInGrad.Text);
 
             var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
             var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
