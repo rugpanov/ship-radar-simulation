@@ -13,5 +13,10 @@ namespace ShipRadarSimulation.bll
         {
             return rad * 180.0 / Math.PI;
         }
+
+        public static double FromKbsToKnot(double speedInKbS)
+        {
+            return speedInKbS * 360;
+        }
     }
 }

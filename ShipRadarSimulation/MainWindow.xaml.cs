@@ -23,13 +23,16 @@ namespace ShipRadarSimulation
         private Ellipse[] myEllipses;
         private TextBlock[] myDegreeLables;
         private Line[] myLines;
-        private Line myCourceLines;
+        private Line myCourceLine;
         private readonly SimulationViewModel myDataContext;
 
         private Ship myTargetShip;
         private Ship myShip;
         private readonly Timer myShownTimer;
         private int myOldTimeInSec;
+        private Line myTargetCourceLine;
+        private Line myTargetCourceArrow1Line;
+        private Line myTargetCourceArrow2Line;
         private const double DefaultTargetDistance = 100;
         private const double DefaultTargetBearing = 0;
 
@@ -48,7 +51,7 @@ namespace ShipRadarSimulation
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
-
+            InitTargetArrowLines();
             // ReSharper disable once ObjectCreationAsStatement
             new DispatcherTimer(
                     new TimeSpan(0, 0, 0, 0, 100),
@@ -73,14 +76,15 @@ namespace ShipRadarSimulation
                 MyCanvas.Children.Add(line);
                 myLines[i] = line;
             }
-            
-            myCourceLines = new Line
+
+            myCourceLine = new Line
             {
-                Stroke = Brushes.Red,
+                Stroke = Brushes.Tomato,
                 StrokeThickness = 1
+                
             };
-            MyCanvas.Children.Add(myCourceLines);
-            Panel.SetZIndex(myCourceLines, 100);
+            MyCanvas.Children.Add(myCourceLine);
+            Panel.SetZIndex(myCourceLine, 100);
         }
 
         private void InitEllipses(int num)
@@ -98,7 +102,7 @@ namespace ShipRadarSimulation
                 myEllipses[i] = ellipse;
             }
         }
-        
+
         private void InitDegreeLables()
         {
             var degree = 90;
@@ -115,7 +119,37 @@ namespace ShipRadarSimulation
                     degree = -15;
             }
         }
-        
+
+        private void InitTargetArrowLines()
+        {
+            myTargetCourceLine = new Line
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 1,
+                Opacity = 0.75
+            };
+            MyCanvas.Children.Add(myTargetCourceLine);
+            Panel.SetZIndex(myTargetCourceLine, 101);
+            
+            myTargetCourceArrow1Line = new Line
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 1,
+                Opacity = 0.75
+            };
+            MyCanvas.Children.Add(myTargetCourceArrow1Line);
+            Panel.SetZIndex(myTargetCourceArrow1Line, 101);
+            
+            myTargetCourceArrow2Line = new Line
+            {
+                Stroke = Brushes.Red,
+                StrokeThickness = 1,
+                Opacity = 0.75
+            };
+            MyCanvas.Children.Add(myTargetCourceArrow2Line);
+            Panel.SetZIndex(myTargetCourceArrow2Line, 101);
+        }
+
         private void TimerTick(object sender, EventArgs e)
         {
             myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
@@ -145,6 +179,7 @@ namespace ShipRadarSimulation
             var scale = ellipse200Rad / 200;
             var centerXy = minSize / 2;
 
+
             for (var i = 0; i < 8; i++)
             {
                 var ellipse = myEllipses[i];
@@ -162,20 +197,45 @@ namespace ShipRadarSimulation
 
             var movementY = myTargetShip.GetY() - myShip.GetY();
             var movementX = myTargetShip.GetX() - myShip.GetX();
+            var targetRenderedX = DrawIndent + ellipse200Rad + scale * movementX;
+            var targetRenderedY = DrawIndent + ellipse200Rad - scale * movementY;
 
-            Canvas.SetTop(EllipseEnemy, DrawIndent + ellipse200Rad - scale * movementY - 2);
-            Canvas.SetLeft(EllipseEnemy, DrawIndent + ellipse200Rad + scale * movementX - 2);
+            Canvas.SetTop(EllipseEnemy, targetRenderedY - 2);
+            Canvas.SetLeft(EllipseEnemy, targetRenderedX - 2);
             EllipseEnemy.Width = DotSize;
             EllipseEnemy.Height = DotSize;
             Panel.SetZIndex(EllipseEnemy, 239);
 
             var courseInRadian = Utils.DegreeToRadian(myShip.GetCourseInGrad());
-            myCourceLines.X1 = centerXy;
-            myCourceLines.Y1 = centerXy;
-            myCourceLines.X2 = DrawIndent + ellipse200Rad + ellipse200Rad * Math.Sin(courseInRadian);
-            myCourceLines.Y2 = DrawIndent + ellipse200Rad - ellipse200Rad * Math.Cos(courseInRadian);
-            
+            myCourceLine.X1 = centerXy;
+            myCourceLine.Y1 = centerXy;
+            myCourceLine.X2 = DrawIndent + ellipse200Rad + ellipse200Rad * Math.Sin(courseInRadian);
+            myCourceLine.Y2 = DrawIndent + ellipse200Rad - ellipse200Rad * Math.Cos(courseInRadian);
+
+            DrawTargetArrowLine(scale, targetRenderedX, targetRenderedY);
             DrawRadialLines15DegreeStep(ellipse200Rad);
+        }
+
+        private void DrawTargetArrowLine(double scale, double targetRenderedX, double targetRenderedY)
+        {
+            var targetCourseInRadian = Utils.DegreeToRadian(myTargetShip.GetCourseInGrad());
+            var lineSize = scale * Utils.FromKbsToKnot(myTargetShip.GetSpeedInKbS());
+            var endOfArrowLineX = targetRenderedX + lineSize * Math.Sin(targetCourseInRadian);
+            var endOfArrowLineY = targetRenderedY - lineSize * Math.Cos(targetCourseInRadian);
+            myTargetCourceLine.X1 = targetRenderedX;
+            myTargetCourceLine.Y1 = targetRenderedY;
+            myTargetCourceLine.X2 = endOfArrowLineX;
+            myTargetCourceLine.Y2 = endOfArrowLineY;
+
+            myTargetCourceArrow1Line.X1 = endOfArrowLineX;
+            myTargetCourceArrow1Line.Y1 = endOfArrowLineY;
+            myTargetCourceArrow1Line.X2 = endOfArrowLineX + 10 * Math.Cos(targetCourseInRadian + 45);
+            myTargetCourceArrow1Line.Y2 = endOfArrowLineY + 10 * Math.Sin(targetCourseInRadian + 45);
+            
+            myTargetCourceArrow2Line.X1 = endOfArrowLineX;
+            myTargetCourceArrow2Line.Y1 = endOfArrowLineY;
+            myTargetCourceArrow2Line.X2 = endOfArrowLineX - 10 * Math.Cos(targetCourseInRadian - 45);
+            myTargetCourceArrow2Line.Y2 = endOfArrowLineY - 10 * Math.Sin(targetCourseInRadian - 45);
         }
 
         private void DrawRadialLines15DegreeStep(double ellipse200Rad)
@@ -359,7 +419,7 @@ namespace ShipRadarSimulation
 
             e.Handled = !isValid;
         }
-        
+
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
