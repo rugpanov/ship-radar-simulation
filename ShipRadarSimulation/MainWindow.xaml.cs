@@ -406,20 +406,6 @@ namespace ShipRadarSimulation
             e.Handled = !regExp.IsMatch(textBox.Text + e.Text);
         }
 
-        private void CourseValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            var textBox = (TextBox) sender;
-            var regExp = new Regex(@"^[0-9]{1,3}(\.([0-9]{1,4})?)?$");
-            var isValid = regExp.IsMatch(textBox.Text + e.Text);
-            if (isValid)
-            {
-                var newCourse = double.Parse(textBox.Text + e.Text);
-                isValid = newCourse <= 360;
-            }
-
-            e.Handled = !isValid;
-        }
-
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();

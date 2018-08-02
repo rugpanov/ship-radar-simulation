@@ -266,7 +266,7 @@
                            Text="Курс" />
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
-                         PreviewTextInput="CourseValidationTextBox"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="OurCourseInGrad"
                          Text="270" />
                 <TextBlock Grid.Column="2"
@@ -365,7 +365,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="1"
                          IsEnabled="{Binding Path=ShowStartButton}"
-                         PreviewTextInput="CourseValidationTextBox"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="TargetBearingInGrad"
                          Text="{Binding Path=TargetBearing}" />
                 <TextBlock Grid.Column="2"
@@ -395,7 +395,7 @@
                 <TextBox Grid.Column="1"
                          Grid.Row="3"
                          IsEnabled="{Binding Path=ShowStartButton}"
-                         PreviewTextInput="CourseValidationTextBox"
+                         PreviewTextInput="DoubleValidationTextBox"
                          Name="TargetCourseInGrad"
                          Text="90" />
                 <TextBlock Grid.Column="2"
