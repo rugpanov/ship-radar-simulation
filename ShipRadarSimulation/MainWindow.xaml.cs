@@ -312,7 +312,7 @@ namespace ShipRadarSimulation
 
             var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text) : 0;
             var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text) : 0;
-            myShip.AddOrder(new Order(theCourse, speedInKnot / 360));
+            myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0));
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
