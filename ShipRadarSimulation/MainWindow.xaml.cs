@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ namespace ShipRadarSimulation
      */
     public partial class MainWindow
     {
+        private ParamSnapshot MyPreviousSnapshot;
         private const int DrawIndent = 50;
         private const int DotSize = 4;
         private const int RadialLinesCount = 12;
@@ -46,8 +48,6 @@ namespace ShipRadarSimulation
             myDataContext.TargetBearing = DefaultTargetBearing;
             MyCanvas.SizeChanged += CanvasSizeChanged;
 
-            myTargetShip = new Ship(0, 0, 0, 0);
-            myShip = new Ship(0, 0, 0, 0);
             InitLines();
             InitEllipses(8);
             InitDegreeLables();
@@ -81,7 +81,6 @@ namespace ShipRadarSimulation
             {
                 Stroke = Brushes.Tomato,
                 StrokeThickness = 1
-                
             };
             MyCanvas.Children.Add(myCourceLine);
             Panel.SetZIndex(myCourceLine, 100);
@@ -130,7 +129,7 @@ namespace ShipRadarSimulation
             };
             MyCanvas.Children.Add(myTargetCourceLine);
             Panel.SetZIndex(myTargetCourceLine, 101);
-            
+
             myTargetCourceArrow1Line = new Line
             {
                 Stroke = Brushes.Red,
@@ -139,7 +138,7 @@ namespace ShipRadarSimulation
             };
             MyCanvas.Children.Add(myTargetCourceArrow1Line);
             Panel.SetZIndex(myTargetCourceArrow1Line, 101);
-            
+
             myTargetCourceArrow2Line = new Line
             {
                 Stroke = Brushes.Red,
@@ -154,7 +153,7 @@ namespace ShipRadarSimulation
         {
             myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
             var timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
-            if (myOldTimeInSec == timeInSec) return;
+            if (myOldTimeInSec == timeInSec || myShip == null) return;
 
             myOldTimeInSec = timeInSec;
             myShip.ProcessOneSecond();
@@ -195,24 +194,32 @@ namespace ShipRadarSimulation
             EllipseCenter.Height = DotSize;
             Panel.SetZIndex(EllipseCenter, 240);
 
-            var movementY = myTargetShip.GetY() - myShip.GetY();
-            var movementX = myTargetShip.GetX() - myShip.GetX();
-            var targetRenderedX = DrawIndent + ellipse200Rad + scale * movementX;
-            var targetRenderedY = DrawIndent + ellipse200Rad - scale * movementY;
 
-            Canvas.SetTop(EllipseEnemy, targetRenderedY - 2);
-            Canvas.SetLeft(EllipseEnemy, targetRenderedX - 2);
-            EllipseEnemy.Width = DotSize;
-            EllipseEnemy.Height = DotSize;
-            Panel.SetZIndex(EllipseEnemy, 239);
+            if (myTargetShip != null)
+            {
+                var movementY = myTargetShip.GetY() - myShip.GetY();
+                var movementX = myTargetShip.GetX() - myShip.GetX();
+                var targetRenderedX = DrawIndent + ellipse200Rad + scale * movementX;
+                var targetRenderedY = DrawIndent + ellipse200Rad - scale * movementY;
 
-            var courseInRadian = Utils.DegreeToRadian(myShip.GetCourseInGrad());
-            myCourceLine.X1 = centerXy;
-            myCourceLine.Y1 = centerXy;
-            myCourceLine.X2 = DrawIndent + ellipse200Rad + ellipse200Rad * Math.Sin(courseInRadian);
-            myCourceLine.Y2 = DrawIndent + ellipse200Rad - ellipse200Rad * Math.Cos(courseInRadian);
+                Canvas.SetTop(EllipseEnemy, targetRenderedY - 2);
+                Canvas.SetLeft(EllipseEnemy, targetRenderedX - 2);
+                EllipseEnemy.Width = DotSize;
+                EllipseEnemy.Height = DotSize;
+                Panel.SetZIndex(EllipseEnemy, 239);
 
-            DrawTargetArrowLine(scale, targetRenderedX, targetRenderedY);
+                DrawTargetArrowLine(scale, targetRenderedX, targetRenderedY);
+            }
+
+            if (myShip != null)
+            {
+                var courseInRadian = Utils.DegreeToRadian(myShip.GetCourseInGrad());
+                myCourceLine.X1 = centerXy;
+                myCourceLine.Y1 = centerXy;
+                myCourceLine.X2 = DrawIndent + ellipse200Rad + ellipse200Rad * Math.Sin(courseInRadian);
+                myCourceLine.Y2 = DrawIndent + ellipse200Rad - ellipse200Rad * Math.Cos(courseInRadian);
+            }
+
             DrawRadialLines15DegreeStep(ellipse200Rad);
         }
 
@@ -231,7 +238,7 @@ namespace ShipRadarSimulation
             myTargetCourceArrow1Line.Y1 = endOfArrowLineY;
             myTargetCourceArrow1Line.X2 = endOfArrowLineX + 10 * Math.Cos(targetCourseInRadian + 45);
             myTargetCourceArrow1Line.Y2 = endOfArrowLineY + 10 * Math.Sin(targetCourseInRadian + 45);
-            
+
             myTargetCourceArrow2Line.X1 = endOfArrowLineX;
             myTargetCourceArrow2Line.Y1 = endOfArrowLineY;
             myTargetCourceArrow2Line.X2 = endOfArrowLineX - 10 * Math.Cos(targetCourseInRadian - 45);
@@ -310,8 +317,8 @@ namespace ShipRadarSimulation
         {
             if (myShip == null) return;
 
-            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text) : 0;
-            var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text) : 0;
+            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
+            var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
             myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0));
         }
 
@@ -328,12 +335,13 @@ namespace ShipRadarSimulation
 
         private void InitBattleField()
         {
-            var targetBearing = TargetBearingInGrad.Text != "" ? double.Parse(TargetBearingInGrad.Text) : 0;
-            var targetDistance = TargetDistanceKb.Text != "" ? double.Parse(TargetDistanceKb.Text) : 0;
-            var targetSpeedInKnot = TargetSpeedInKnot.Text != "" ? double.Parse(TargetSpeedInKnot.Text) : 0;
-            var targetCourseInGrad = TargetCourseInGrad.Text != "" ? double.Parse(TargetCourseInGrad.Text) : 0;
-            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text) : 0;
-            var theCourse = OurCourseInGrad.Text != "" ?double.Parse(OurCourseInGrad.Text) : 0;
+            MyPreviousSnapshot = new ParamSnapshot(this);
+            var targetBearing = TargetBearingInGrad.Text != "" ? double.Parse(TargetBearingInGrad.Text, CultureInfo.InvariantCulture) : 0;
+            var targetDistance = TargetDistanceKb.Text != "" ? double.Parse(TargetDistanceKb.Text, CultureInfo.InvariantCulture) : 0;
+            var targetSpeedInKnot = TargetSpeedInKnot.Text != "" ? double.Parse(TargetSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
+            var targetCourseInGrad = TargetCourseInGrad.Text != "" ? double.Parse(TargetCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
+            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
+            var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
 
             var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
             var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
@@ -350,14 +358,12 @@ namespace ShipRadarSimulation
             myDataContext.ShowPauseSimulation = false;
             myDataContext.ShowStopButton = false;
 
-            myShip = new Ship(0, 0, 0, 0);
-            myTargetShip = new Ship(0, 0, 0, 0);
-            myDataContext.TargetDistance = DefaultTargetDistance;
-            myDataContext.TargetBearing = DefaultTargetBearing;
-            Redraw();
-
             myShownTimer.Reset();
+            myShip = null;
+            myTargetShip = null;
             myDataContext.TimerTimeInMs = 0;
+            PropogateParameters(MyPreviousSnapshot);
+            Redraw();
         }
 
         private void OnClickPouseSimulationButton(object sender, RoutedEventArgs e)
@@ -406,17 +412,20 @@ namespace ShipRadarSimulation
             e.Handled = !regExp.IsMatch(textBox.Text + e.Text);
         }
 
+        private void PropogateParameters(ParamSnapshot paramSnapshot)
+        {
+            myDataContext.TargetDistance = paramSnapshot.GetValue(TargetDistanceKb);
+            myDataContext.TargetBearing = paramSnapshot.GetValue(TargetBearingInGrad);
+            myDataContext.MyCourseInGrad = paramSnapshot.GetValue(OurCourseInGrad);
+            myDataContext.MySpeedInKnot = paramSnapshot.GetValue(OurSpeedInKnot);
+            OurSpeedInKnot.Text = paramSnapshot.GetValue(OurSpeedInKnot).ToString(CultureInfo.InvariantCulture);
+            OurCourseInGrad.Text = paramSnapshot.GetValue(OurCourseInGrad).ToString(CultureInfo.InvariantCulture);
+        }
+        
         private void OnClickExit(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void ReplaceEmptyWithZero(object sender, EventArgs e)
-        {
-            if (((TextBox)sender).Text == "")
-            {
-                ((TextBox)sender).Text = "0";
-            }
-        }
     }
 }
