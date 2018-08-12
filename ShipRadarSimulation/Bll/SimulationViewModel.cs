@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace ShipRadarSimulation.bll
 {
@@ -14,7 +13,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myShowStartButton = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ShowStartButton");
             }
         }
 
@@ -27,7 +26,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myShowStopButton = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ShowStopButton");
             }
         }
 
@@ -39,7 +38,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myAngularVelocityInGradSec = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("MyAngularVelocityInGradSec");
             }
         }
         
@@ -51,7 +50,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myAccelerationInKnotSecInKnotSec = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("MyAccelerationInKnotSec");
             }
         }
         
@@ -63,7 +62,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myShowPauseSimulation = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ShowPauseSimulation");
             }
         }
 
@@ -75,7 +74,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myShowResumeSimulation = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ShowResumeSimulation");
             }
         }
 
@@ -88,7 +87,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myCourceInGrad = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("MyCourseInGrad");
             }
         }
 
@@ -101,7 +100,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 mySpeedInKnot = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("MySpeedInKnot");
             }
         }
         
@@ -114,7 +113,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myTargetDistance = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("TargetDistance");
             }
         }
 
@@ -127,7 +126,7 @@ namespace ShipRadarSimulation.bll
             set
             {
                 myTargetBearing = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("TargetBearing");
             }
         }
 
@@ -155,7 +154,7 @@ namespace ShipRadarSimulation.bll
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        protected virtual void NotifyPropertyChanged(string propertyName = "")
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
