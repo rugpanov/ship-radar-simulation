@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -317,9 +318,16 @@ namespace ShipRadarSimulation
         {
             if (myShip == null) return;
 
-            var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
-            var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
-            myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0));
+            try
+            {
+                var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
+                var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
+                myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0));
+            }
+            catch (Exception exception)
+            {
+                LogException(exception);
+            }
         }
 
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
@@ -427,5 +435,15 @@ namespace ShipRadarSimulation
             Application.Current.Shutdown();
         }
 
+        private static void LogException(Exception ex)
+        {
+            using (var writer = new StreamWriter("./Exceptions.txt", true))
+            {
+                writer.WriteLine("Message :" + ex.Message + "\n" +
+                                 "StackTrace :" + ex.StackTrace + "\n" +
+                                 "Date :" + DateTime.Now);
+                writer.WriteLine("\n-----------------------------------------------------------------------------\n");
+            }
+        }
     }
 }
