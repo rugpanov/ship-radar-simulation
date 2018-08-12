@@ -140,6 +140,30 @@ namespace ShipRadarSimulation.bll
                 NotifyPropertyChanged("TimerTimePresentable");
             }
             get => myTimerTimeInMs;
+        }        
+        
+        private double myDepthInMeters;
+
+        public double MyDepthInMeters
+        {
+            set
+            {
+                myDepthInMeters = value;
+                NotifyPropertyChanged("MyDepthInMeters");
+            }
+            get => myDepthInMeters;
+        }        
+        
+        private double myDepthChangeInMetersSec = Constants.DefaultDepthChangeInMetersSec;
+
+        public double MyDepthChangeInMetersSec
+        {
+            set
+            {
+                myDepthChangeInMetersSec = value;
+                NotifyPropertyChanged("MyDepthChangeInMetersSec");
+            }
+            get => myDepthChangeInMetersSec;
         }
 
         // ReSharper disable once UnusedMember.Global

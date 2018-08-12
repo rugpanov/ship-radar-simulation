@@ -9,8 +9,10 @@ namespace ShipRadarSimulation.Entities
         private double myY;
         private double mySpeedInKbS;
         private double myCourseInGrad;
+        private double myDepth;
         private readonly double myAccelerationInKbS;
         private readonly double myAngularVelocityInGradSec;
+        private readonly double myDepthChange;
         private Order myOrder;
 
         public Ship(double x, double y, double speedInKbS, double courseInGrad)
@@ -25,15 +27,19 @@ namespace ShipRadarSimulation.Entities
             double y,
             double speedInKbS,
             double courseInGrad,
+            double depth,
             double accelerationInKbS,
-            double angularVelocityInGradSec)
+            double angularVelocityInGradSec,
+            double depthChange)
         {
             myX = x;
             myY = y;
             mySpeedInKbS = speedInKbS;
             myCourseInGrad = courseInGrad;
+            myDepth = depth;
             myAccelerationInKbS = accelerationInKbS;
             myAngularVelocityInGradSec = angularVelocityInGradSec;
+            myDepthChange = depthChange;
         }
 
         public double GetSpeedInKbS()
@@ -56,6 +62,11 @@ namespace ShipRadarSimulation.Entities
             return myY;
         }
 
+        public double GetDepth()
+        {
+            return myDepth;
+        }
+
         public void ProcessOneSecond()
         {
             ProcessOrderOneSecond();
@@ -73,8 +84,11 @@ namespace ShipRadarSimulation.Entities
 
             var deltaCourse = myCourseInGrad - myOrder.NewCourseInGrad;
             var deltaSpeed = mySpeedInKbS - myOrder.NewSpeed;
+            var deltaDepth = myDepth - myOrder.NewDepth;
 
-            if (Math.Abs(deltaCourse) < Constants.Epselon && Math.Abs(deltaSpeed) < Constants.Epselon)
+            if (Math.Abs(deltaCourse) < Constants.Epselon &&
+                Math.Abs(deltaSpeed) < Constants.Epselon &&
+                Math.Abs(deltaDepth) < Constants.Epselon)
             {
                 myOrder = null;
                 return;
@@ -108,11 +122,25 @@ namespace ShipRadarSimulation.Entities
                 mySpeedInKbS = myOrder.NewSpeed;
             }
 
+            if (deltaDepth > myDepthChange)
+            {
+                myDepth -= myDepthChange;
+            }
+            else if (deltaDepth < -myDepthChange)
+            {
+                myDepth += myDepthChange;
+            }
+            else
+            {
+                myDepth = myOrder.NewDepth;
+            }
+            
+            
             if (myCourseInGrad >= 360)
             {
                 myCourseInGrad -= 360;
             }
-            
+
             if (myCourseInGrad < 0)
             {
                 myCourseInGrad += 360;

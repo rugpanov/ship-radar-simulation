@@ -7,7 +7,7 @@
         Title="Пеленг / Дистанция"
         Height="665" Width="925"
         KeyDown="SpaceIsPressed"
-        MinHeight="665" MinWidth="925" d:DataContext="{d:DesignInstance}">
+        MinHeight="760" MinWidth="1070" d:DataContext="{d:DesignInstance}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <SolidColorBrush x:Key="DarkSquareColor" Color="#18FFFFFF" />
@@ -140,8 +140,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" MinHeight="160" />
-            <RowDefinition Height="*" MinHeight="165" />
+            <RowDefinition Height="*" MinHeight="205" />
+            <RowDefinition Height="*" MinHeight="180" />
             <RowDefinition Height="*" MinHeight="165" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -200,6 +200,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Column="0"
@@ -227,6 +228,18 @@
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
                            Text="°" />
+                <TextBlock Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource InlineText}"
+                           Text="Глубина" />
+                <TextBox Grid.Column="1"
+                         Grid.Row="2"
+                         Text="{Binding Path=MyDepthInMeters}"
+                         IsEnabled="False" />
+                <TextBlock Grid.Column="2"
+                           Grid.Row="2"
+                           Style="{StaticResource InlineText}"
+                           Text="м" />
             </Grid>
         </GroupBox>
 
@@ -241,6 +254,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -273,9 +287,24 @@
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
                            Text="°" />
+                
+                <TextBlock Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource InlineText}"
+                           Text="Глубина" />
+                <TextBox Grid.Column="1"
+                         Grid.Row="2"
+                         PreviewTextInput="DoubleValidationTextBox"
+                         Name="OurDepthInMeters"
+                         Text="40" />
+                <TextBlock Grid.Column="2"
+                           Grid.Row="2"
+                           Style="{StaticResource InlineText}"
+                           Text="м" />
+                
                 <Grid Grid.Column="0"
                       Grid.ColumnSpan="3"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Visibility="{Binding Path=ShowStartButton, Converter={StaticResource BoolToVis}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -286,34 +315,57 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0"
+                               Grid.Row="0"
                                Style="{StaticResource InlineText}"
                                Text="ω" />
                     <TextBox Grid.Column="1"
+                             Grid.Row="0"
                              Text="{Binding Path=MyAngularVelocityInGradSec}"
                              PreviewTextInput="DoubleValidationTextBox"
                              Margin="2,5,7,0" />
                     <TextBlock Grid.Column="2"
+                               Grid.Row="0"
                                Style="{StaticResource InlineText}"
                                Text="°/с"
-                               Margin="2,5,15,0" />
+                               Margin="2,7,15,0" />
 
                     <TextBlock Grid.Column="3"
+                               Grid.Row="0"
                                Style="{StaticResource InlineText}"
                                Text="a" />
                     <TextBox Grid.Column="4"
+                             Grid.Row="0"
                              Text="{Binding Path=MyAccelerationInKnotSec}"
                              PreviewTextInput="DoubleValidationTextBox"
                              Margin="2,5,7,0" />
                     <TextBlock Grid.Column="5"
+                               Grid.Row="0"
                                Style="{StaticResource InlineText}"
                                Text="уз/с"
                                Margin="2,5,0,0" />
+                    
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="1"
+                               Margin="10,7,10,0"
+                               Style="{StaticResource InlineText}"
+                               Text="Δh" />
+                    <TextBox Grid.Column="1"
+                             Grid.Row="1"
+                             Text="{Binding Path=MyDepthChangeInMetersSec}"
+                             PreviewTextInput="DoubleValidationTextBox"
+                             Margin="2,5,7,0" />
+                    <TextBlock Grid.Column="2"
+                               Grid.Row="1"
+                               Style="{StaticResource InlineText}"
+                               Text="м/с"
+                               Margin="2,7,0,0" />
                 </Grid>
                 <Button Grid.Column="0"
-                        Grid.Row="2"
+                        Grid.Row="3"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
                         Content="Совершить маневр"
@@ -321,9 +373,9 @@
                         Foreground="Black"
                         Width="125"
                         Height="30"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Center"
                         Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
-                        Margin="0,11,0,0"
+                        Margin="0,18,0,0"
                         Click="OnClickRequestChangeParameters" />
             </Grid>
         </GroupBox>

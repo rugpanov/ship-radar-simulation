@@ -163,6 +163,7 @@ namespace ShipRadarSimulation
             myDataContext.TargetBearing = myShip.MeasureBearing(myTargetShip);
             myDataContext.MyCourseInGrad = myShip.GetCourseInGrad();
             myDataContext.MySpeedInKnot = myShip.GetSpeedInKbS() * 360;
+            myDataContext.MyDepthInMeters = myShip.GetDepth();
             Redraw();
         }
 
@@ -322,7 +323,8 @@ namespace ShipRadarSimulation
             {
                 var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
                 var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
-                myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0));
+                var theDepth = OurDepthInMeters.Text != "" ? double.Parse(OurDepthInMeters.Text, CultureInfo.InvariantCulture) : 0;
+                myShip.AddOrder(new Order(theCourse, speedInKnot / 360.0, theDepth));
             }
             catch (Exception exception)
             {
@@ -350,12 +352,14 @@ namespace ShipRadarSimulation
             var targetCourseInGrad = TargetCourseInGrad.Text != "" ? double.Parse(TargetCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
             var speedInKnot = OurSpeedInKnot.Text != "" ? double.Parse(OurSpeedInKnot.Text, CultureInfo.InvariantCulture) : 0;
             var theCourse = OurCourseInGrad.Text != "" ? double.Parse(OurCourseInGrad.Text, CultureInfo.InvariantCulture) : 0;
+            var theDepth = OurDepthInMeters.Text != "" ? double.Parse(OurDepthInMeters.Text, CultureInfo.InvariantCulture) : 0;
 
             var targetX = targetDistance * Math.Sin(Utils.DegreeToRadian(targetBearing));
             var targetY = targetDistance * Math.Cos(Utils.DegreeToRadian(targetBearing));
             myTargetShip = new Ship(targetX, targetY, targetSpeedInKnot / 360, targetCourseInGrad);
-            myShip = new Ship(0, 0, speedInKnot / 360, theCourse,
-                myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec);
+            myShip = new Ship(0, 0, speedInKnot / 360, theCourse, theDepth,
+                myDataContext.MyAccelerationInKnotSec / 360, myDataContext.MyAngularVelocityInGradSec,
+                myDataContext.MyDepthChangeInMetersSec);
             Redraw();
         }
 
