@@ -85,8 +85,8 @@ namespace ShipRadarSimulation.Entities
             {
                 myCourseInGrad -= myAngularVelocityInGradSec;
             }
-            else if (deltaCourse < -myAngularVelocityInGradSec && deltaCourse > -180 ||
-                     deltaCourse > myAngularVelocityInGradSec && deltaCourse > 180)
+            else if (deltaCourse < -myAngularVelocityInGradSec && deltaCourse >= -180 ||
+                     deltaCourse > myAngularVelocityInGradSec && deltaCourse >= 180)
             {
                 myCourseInGrad += myAngularVelocityInGradSec;
             }
