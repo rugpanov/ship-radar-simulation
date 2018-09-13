@@ -38,6 +38,9 @@ namespace ShipRadarSimulation
         private Line myTargetCourceArrow2Line;
         private const double DefaultTargetDistance = 100;
         private const double DefaultTargetBearing = 0;
+        private int myWip;
+        private int myWipCounter;
+        private double myTempWip;
 
         public MainWindow()
         {
@@ -155,7 +158,7 @@ namespace ShipRadarSimulation
             myDataContext.TimerTimeInMs = myShownTimer.GetTimePassedInMs();
             var timeInSec = (int) myDataContext.TimerTimeInMs / 1000;
             if (myOldTimeInSec == timeInSec || myShip == null) return;
-
+            var previousBearing = myDataContext.TargetBearing;
             myOldTimeInSec = timeInSec;
             myShip.ProcessOneSecond();
             myTargetShip.ProcessOneSecond();
@@ -164,6 +167,15 @@ namespace ShipRadarSimulation
             myDataContext.MyCourseInGrad = myShip.GetCourseInGrad();
             myDataContext.MySpeedInKnot = myShip.GetSpeedInKbS() * 360;
             myDataContext.MyDepthInMeters = myShip.GetDepth();
+            
+            myWipCounter--;
+            myTempWip += myDataContext.TargetBearing - previousBearing;
+            if (myWipCounter == 0)
+            {
+                myWipCounter = myWip;
+                myDataContext.CurrentWip = myTempWip / myWip;
+                myTempWip = 0;
+            }
             Redraw();
         }
 
@@ -335,7 +347,9 @@ namespace ShipRadarSimulation
         private void OnClickStartSimulationButton(object sender, RoutedEventArgs e)
         {
             InitBattleField();
-
+            myWip = (int)myDataContext.WipTimeInSec;
+            myWipCounter = myWip;
+            myTempWip = 0;
             myDataContext.ShowStartButton = false;
             myDataContext.ShowPauseSimulation = true;
             myDataContext.ShowStopButton = true;
@@ -374,6 +388,9 @@ namespace ShipRadarSimulation
             myShip = null;
             myTargetShip = null;
             myDataContext.TimerTimeInMs = 0;
+            myWip = 0;
+            myWipCounter = 0;
+            myTempWip = 0;
             PropogateParameters(MyPreviousSnapshot);
             Redraw();
         }

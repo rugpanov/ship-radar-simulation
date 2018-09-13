@@ -155,6 +155,7 @@ namespace ShipRadarSimulation.bll
         }        
         
         private double myDepthChangeInMetersSec = Constants.DefaultDepthChangeInMetersSec;
+        private double myWipTimeInSec = Constants.DefaultVipTimeInSec;
 
         public double MyDepthChangeInMetersSec
         {
@@ -164,6 +165,17 @@ namespace ShipRadarSimulation.bll
                 NotifyPropertyChanged("MyDepthChangeInMetersSec");
             }
             get => myDepthChangeInMetersSec;
+        }       
+        
+        // ReSharper disable once UnusedMember.Global
+        public double WipTimeInSec
+        {
+            set
+            {
+                myWipTimeInSec = value;
+                NotifyPropertyChanged("VipTimeInSec");
+            }
+            get => myWipTimeInSec;
         }
 
         // ReSharper disable once UnusedMember.Global
@@ -174,6 +186,27 @@ namespace ShipRadarSimulation.bll
                 var timeInMinutes = myTimerTimeInMs / 1000.0 / 60.0;
                 return $"{timeInMinutes:0.00}";
             }
+        }
+
+        private double myCurrentWip = 0;
+
+        public double CurrentWip
+        {
+            set
+            {
+                myCurrentWip = value;
+                NotifyPropertyChanged("CurrentPresentableWip");
+            }
+            get => myCurrentWip;
+        }
+
+        public string CurrentPresentableWip
+        {
+            set
+            {
+                NotifyPropertyChanged("CurrentPresentableWip");
+            }
+            get => "(" + Math.Round(myCurrentWip, 3) + ")";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
