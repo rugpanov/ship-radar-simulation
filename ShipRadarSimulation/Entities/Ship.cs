@@ -15,14 +15,6 @@ namespace ShipRadarSimulation.Entities
         private readonly double myDepthChange;
         private Order myOrder;
 
-        public Ship(double x, double y, double speedInKbS, double courseInGrad)
-        {
-            myX = x;
-            myY = y;
-            mySpeedInKbS = speedInKbS;
-            myCourseInGrad = courseInGrad;
-        }
-
         public Ship(double x,
             double y,
             double speedInKbS,

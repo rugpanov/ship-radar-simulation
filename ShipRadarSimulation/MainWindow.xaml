@@ -287,7 +287,7 @@
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
                            Text="°" />
-                
+
                 <TextBlock Grid.Column="0"
                            Grid.Row="2"
                            Style="{StaticResource InlineText}"
@@ -301,7 +301,7 @@
                            Grid.Row="2"
                            Style="{StaticResource InlineText}"
                            Text="м" />
-                
+
                 <Grid Grid.Column="0"
                       Grid.ColumnSpan="3"
                       Grid.Row="3"
@@ -347,7 +347,7 @@
                                Style="{StaticResource InlineText}"
                                Text="уз/с"
                                Margin="2,5,0,0" />
-                    
+
                     <TextBlock Grid.Column="0"
                                Grid.Row="1"
                                Margin="10,7,10,0"
@@ -363,7 +363,7 @@
                                Style="{StaticResource InlineText}"
                                Text="м/с"
                                Margin="2,7,0,0" />
-                    
+
                     <TextBlock Grid.Column="3"
                                Grid.Row="1"
                                Style="{StaticResource InlineText}"
@@ -379,19 +379,38 @@
                                Text="c"
                                Margin="2,7,15,0" />
                 </Grid>
-                <Button Grid.Column="0"
-                        Grid.Row="3"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Center"
-                        Content="Совершить маневр"
-                        Background="#bababa"
-                        Foreground="Black"
-                        Width="125"
-                        Height="30"
-                        VerticalAlignment="Center"
-                        Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}"
-                        Margin="0,18,0,0"
-                        Click="OnClickRequestChangeParameters" />
+                <Grid Grid.Column="0"
+                      Grid.Row="3"
+                      Grid.ColumnSpan="3"
+                      Visibility="{Binding Path=ShowStopButton, Converter={StaticResource BoolToVis}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Content="Совершить маневр"
+                            Background="#bababa"
+                            Foreground="Black"
+                            Width="125"
+                            Height="30"
+                            VerticalAlignment="Center"
+                            Margin="0,18,0,0"
+                            Click="OnClickRequestChangeParameters" />
+                    <Button Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Content="Маневр цели"
+                            Background="#bababa"
+                            Foreground="Black"
+                            Width="125"
+                            Height="30"
+                            VerticalAlignment="Center"
+                            Margin="0,18,0,0"
+                            Click="OnClickRequestChangeTargetParameters" />
+                </Grid>
             </Grid>
         </GroupBox>
         <GroupBox Grid.Row="3" Grid.Column="2" Padding="10" Margin="10" BorderThickness="1" BorderBrush="#bababa">
@@ -425,8 +444,8 @@
                            Grid.Row="0"
                            Style="{StaticResource InlineText}"
                            Text="кб" />
-                
-                
+
+
                 <TextBlock Grid.Column="0"
                            Grid.Row="1"
                            Style="{StaticResource InlineText}"
