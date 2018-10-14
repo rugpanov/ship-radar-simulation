@@ -206,7 +206,7 @@ namespace ShipRadarSimulation.bll
             {
                 NotifyPropertyChanged("CurrentPresentableWip");
             }
-            get => "(" + Math.Round(myCurrentWip, 3) + ")";
+            get => "(" + Math.Round(myCurrentWip * 60, 3) + ")";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
